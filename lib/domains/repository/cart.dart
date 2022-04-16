@@ -1,15 +1,39 @@
-import 'product.dart';
+import 'dart:convert';
+
+import 'cartproduct.dart';
 
 class Cart {
-  Product? product;
-  int? numOfItem;
+  int? accountId;
+  int? cartId;
+  double? totalPrice;
+  List<CartProduct>? cartInfo;
 
-  Cart({this.product, this.numOfItem});  
+  Cart({
+    this.cartId,
+    this.accountId,
+    this.totalPrice,
+    this.cartInfo,
+  });
+
+  Cart.fromJson(Map<String, dynamic> json) {
+    cartId = json['cartId'];
+    accountId = json['accountId'];
+    totalPrice = json['totalPrice'];
+    cartInfo = <CartProduct>[];
+    var list = jsonDecode(json['cartInfo'].replaceAll("\\", ""));
+    if (list.length != 0) {
+      list.forEach((v) {
+        cartInfo!.add(CartProduct.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cartId'] = cartId;
+    if (cartInfo != null) {
+      data['cartInfo'] = cartInfo!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
-
-List<Cart> demoCart = [
-    
-    Cart(product: demoProduct[0], numOfItem: 2),
-    Cart(product: demoProduct[1], numOfItem: 3),
-    Cart(product: demoProduct[2], numOfItem: 5),
-  ];

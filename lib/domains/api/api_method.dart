@@ -3,13 +3,15 @@ import 'package:http/http.dart' as http;
 
 import 'api_url.dart';
 
-Future<dynamic> callApi(String urii, String method,
-    {Map<String, String>? header, Map<String, dynamic>? queryParams, Map<String, dynamic>? bodyParams}) async {
+Future<dynamic> callApi(String uri, String method,
+    {Map<String, String>? header, Map<String, dynamic>? queryParams, 
+    Map<String, dynamic>? bodyParams}) async {
+      
   try {
     var fullUri = Uri(
         scheme: ApiUrl.scheme,
         host: ApiUrl.host,
-        path: urii,        
+        path: uri,        
         queryParameters: queryParams);
     late http.Response response;
 
@@ -18,7 +20,7 @@ Future<dynamic> callApi(String urii, String method,
         response = await http.get(fullUri, headers: header);
         break;
       case "put":
-        response = await http.put(Uri.parse(urii), headers: header, body: bodyParams);
+        response = await http.put(fullUri, headers: header, body: bodyParams);
         break;
       case "post":
         response = await http.post(fullUri, headers: header, body: bodyParams);

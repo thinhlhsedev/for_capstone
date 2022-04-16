@@ -17,16 +17,14 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(
-        horizontal: kDefaultPadding,        
+        horizontal: kDefaultPadding,
       ),
-      // color: Colors.blueAccent,
       height: 160,
       child: InkWell(
         onTap: press,
         child: Stack(
           alignment: Alignment.bottomCenter,
-          children: <Widget>[
-            // Those are our background
+          children: [
             Container(
               height: 136,
               decoration: BoxDecoration(
@@ -42,52 +40,113 @@ class OrderCard extends StatelessWidget {
                 ),
               ),
             ),
-            // Product title and price
-            Positioned(
-              bottom: 0,
-              left: 0,
-              child: SizedBox(
-                height: 136,
-                // our image take 200 width, thats why we set out total width - 200
-                //width: SizeConfig.screenWidth - 200,
-                child: Column(
-                  //crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: kDefaultPadding),
-                      child: Text(
-                        "dfdsfsdfdsf",
-                        style: Theme.of(context).textTheme.button,
-                      ),
+            SizedBox(
+              height: 126,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: Text(
+                      "Mã đơn hàng: " + order.orderId.toString(),
+                      style: Theme.of(context).textTheme.button,
                     ),
-                    // it use the available space
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: kDefaultPadding * 1.5, 
-                        vertical: kDefaultPadding / 4, 
-                      ),
-                      decoration: const BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(22),
-                          topRight: Radius.circular(22),
-                        ),
-                      ),
-                      child: Text(
-                        "\$${order.totalPrice}",
-                        style: Theme.of(context).textTheme.button,
-                      ),
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: Text(
+                      "Địa chỉ: " + (order.customerAddress ?? ""),
+                      style: Theme.of(context).textTheme.button,
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: Text(
+                      "Ngày giao hàng dự kiến: " +
+                          getDate(order.expiryDate!.substring(0, 10)),
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                  ), // it use the a
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: Text(
+                      order.isShorTerm == true
+                          ? "Loại: đơn lẻ"
+                          : "Loại: đơn định kì",
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                  ),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      buildPricePadding("\$${order.totalPrice}"),
+                      const Spacer(),
+                      buildDetailPadding("Detail", context),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Container buildDetailPadding(String text, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: kDefaultPadding * 1.5,
+        vertical: kDefaultPadding / 4,
+      ),
+      decoration: const BoxDecoration(
+        color: kPrimaryColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(22),
+          bottomRight: Radius.circular(22),
+        ),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  Container buildPricePadding(String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: kDefaultPadding * 1.5,
+        vertical: kDefaultPadding / 4,
+      ),
+      decoration: const BoxDecoration(
+        color: kPrimaryColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(22),
+          topRight: Radius.circular(22),
+        ),
+      ),
+      child: Text(
+        text,
+        style:
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  String getDate(String date) {
+    Iterable<String> list = date.split("-").reversed;
+    String result = list.first + "-" + list.elementAt(1) + "-" + list.last;
+    return result;
   }
 }

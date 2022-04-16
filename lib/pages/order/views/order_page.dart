@@ -20,7 +20,9 @@ class OrderPage extends StatelessWidget {
     return AppBar(
       backgroundColor: kPrimaryColor,
       elevation: 0,
-      title: const Text("Order"),      
+      title: const Text("Đơn Hàng Của Tôi"),    
+      centerTitle: true,
+      automaticallyImplyLeading: false, 
     );
   }
 }

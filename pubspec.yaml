@@ -41,7 +41,9 @@ dependencies:
   form_field_validator: ^1.1.0
   google_sign_in: ^5.2.4
   shared_preferences: ^2.0.13
-  intl: ^0.17.0
+  intl: ^0.17.0  
+  firebase_core: ^1.14.1
+  firebase_auth: ^3.3.14
 
 flutter_icons:
   image_path: "assets/images/logo.png"
@@ -60,6 +62,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  build_runner: ^2.1.8
+  json_serializable: ^6.1.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

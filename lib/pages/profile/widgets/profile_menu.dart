@@ -16,8 +16,7 @@ class ProfileMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (titleText.contains("Change Password") ||
-        titleText.contains("Log Out")) {
+    if (titleText.contains("Đăng Xuất")) {
       return ProfileMenuPadding(
         press: press,
         icon: icon,

@@ -1,9 +1,11 @@
 import 'package:for_capstone/constants.dart';
+import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/pages/order/widgets/order_card.dart';
 
 import 'package:flutter/material.dart';
 import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/order.dart';
+import '../../order_detail/views/order_detail_page.dart';
 
 class OrderPanel extends StatelessWidget {
   const OrderPanel({
@@ -16,17 +18,32 @@ class OrderPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (orderStatus) {
-      case "All Order":
-        return loadOrderData("getAllOrders");
-      case "Processing":
-        return loadOrderData("getOrders/Processing");
-      case "Completed":
-        return loadOrderData("getOrders/Completed");
-      case "Canceled":
-        return loadOrderData("getOrders/Canceled");
+      case "Tất cả đơn":
+        return loadOrderData(
+            "getOrdersOf/acc/" + (UtilsPreference.getAccountId() ?? ""));
+      case "Chờ xác nhận":
+        return loadOrderData("getOrderOf/" +
+            (UtilsPreference.getAccountId() ?? "") +
+            "/Pending");
+      case "Đang xử lý":
+        return loadOrderData("getOrderOf/" +
+            (UtilsPreference.getAccountId() ?? "") +
+            "/Processing");
+      case "Đang vận chuyển":
+        return loadOrderData("getOrderOf/" +
+            (UtilsPreference.getAccountId() ?? "") +
+            "/Delivering");
+      case "Đã hoàn tất":
+        return loadOrderData("getOrderOf/" +
+            (UtilsPreference.getAccountId() ?? "") +
+            "/Completed");
+      case "Đã hủy":
+        return loadOrderData("getOrderOf/" +
+            (UtilsPreference.getAccountId() ?? "") +
+            "/Canceled");
       default:
         return const Center(
-          child: Text("Exception"),
+          child: Text("Lỗi"),
         );
     }
   }
@@ -35,7 +52,7 @@ class OrderPanel extends StatelessWidget {
     return FutureBuilder<dynamic>(
       future: get(uri),
       builder: (context, snapshot) {
-        final order = snapshot.data;
+        final orders = snapshot.data;
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return const Padding(
@@ -57,7 +74,7 @@ class OrderPanel extends StatelessWidget {
               );
             } else {
               return Expanded(
-                child: buildOrderList(order),
+                child: buildOrderList(orders),
               );
             }
         }
@@ -78,7 +95,16 @@ class OrderPanel extends StatelessWidget {
           final order = orderList[index];
           return OrderCard(
             order: order,
-            press: () {},
+            press: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OrderDetailPage(
+                    orderId: order.orderId!,
+                  ),
+                ),
+              );
+            },
           );
         },
       );

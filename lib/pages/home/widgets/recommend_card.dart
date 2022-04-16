@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
-class ComponentCard extends StatelessWidget {
-  const ComponentCard({
+class RecommendCard extends StatelessWidget {
+  const RecommendCard({
     Key? key,
     required this.image,
     required this.title,
-    required this.country,
     required this.price,
     required this.press,
   }) : super(key: key);
 
-  final String image, title, country;
+  final String image, title;
   final int price;
   final VoidCallback press;
 
@@ -27,8 +26,8 @@ class ComponentCard extends StatelessWidget {
       ),
       width: SizeConfig.screenWidth * 0.4,
       child: Column(
-        children: <Widget>[
-          Image.asset(image),
+        children: [
+          Image.asset("assets/images/gas.png"),
           GestureDetector(
             onTap: press,
             child: Container(
@@ -38,33 +37,22 @@ class ComponentCard extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(10),
                   bottomRight: Radius.circular(10),
-                ),                
+                ),
               ),
               child: Row(
-                children: <Widget>[
+                children: [
                   RichText(
                     text: TextSpan(
-                      children: [
-                        TextSpan(
-                            text: "$title\n".toUpperCase(),
-                            style: Theme.of(context).textTheme.button),
-                        TextSpan(
-                          text: country.toUpperCase(),
-                          style: TextStyle(
-                            color: kPrimaryColor.withOpacity(0.5),
-                          ),
-                        ),
-                      ],
-                    ),
+                        text: "$title\n".toUpperCase(),
+                        style: Theme.of(context).textTheme.button),
                   ),
                   const Spacer(),
-                  Text(
-                    '\$$price',
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        ?.copyWith(color: kPrimaryColor),
-                  )
+                  RichText(
+                    text: TextSpan(
+                      text: '\$$price',
+                      style: Theme.of(context).textTheme.button!.copyWith(color: kPrimaryColor),
+                    ),
+                  ),
                 ],
               ),
             ),

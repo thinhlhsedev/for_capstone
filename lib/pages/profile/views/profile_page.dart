@@ -20,7 +20,9 @@ class ProfilePage extends StatelessWidget {
     return AppBar(
       backgroundColor: kPrimaryColor,
       elevation: 0,
-      title: const Text("Profile"),      
+      title: const Text("Thông Tin Tài Khoản"),
+      centerTitle: true,      
+      automaticallyImplyLeading: false,
     );
   }
 }

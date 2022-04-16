@@ -14,7 +14,8 @@ class ProductCard extends StatelessWidget {
   }) : super(key: key);
 
   final String image, title;
-  final int price, number;
+  final double price;
+  final int number;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,9 @@ class ProductCard extends StatelessWidget {
             RoundedIconBtn(
               icon: Icons.remove,
               showShadow: true,
-              press: () {},
+              press: () {
+                
+              },
             ),
             Container(
               height: getProportionateScreenHeight(40),
@@ -73,11 +76,13 @@ class ProductCard extends StatelessWidget {
             RoundedIconBtn(
               icon: Icons.add,
               showShadow: true,
-              press: () {},
+              press: () {
+
+              },
             ),
           ],
         ),
       ),
     );
-  }
+  }  
 }

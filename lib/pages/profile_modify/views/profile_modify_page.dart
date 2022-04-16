@@ -15,7 +15,7 @@ class ProfileModifyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(text),
-      body: Body(text: text),
+      body: Body(text: text),      
     );
   }
 
@@ -24,6 +24,9 @@ class ProfileModifyPage extends StatelessWidget {
       backgroundColor: kPrimaryColor,
       elevation: 0,
       title: Text(text),
+      actions: [
+        
+      ],
     );
   }
 }

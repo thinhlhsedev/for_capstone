@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'account.g.dart';
+
+@JsonSerializable()
 class Account {
   int? accountId;
   String? email;
@@ -24,33 +29,21 @@ class Account {
       this.sectionId,
       this.isActive});
 
-  Account.fromJson(Map<String, dynamic> json) {
-    accountId = json['accountId'];
-    email = json['email'];
-    name = json['name'];
-    gender = json['gender'];
-    dateOfBirth = json['dateOfBirth'];
-    address = json['address'];
-    phone = json['phone'];
-    avatarUrl = json['avatarUrl'];
-    roleId = json['roleId'];
-    sectionId = json['sectionId'];
-    isActive = json['isActive'];
-  }
+  factory Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);
 
-  Map<String, String> toJson() {
-    final Map<String, String> data = <String, String>{};
-    data['accountId'] = accountId.toString();
-    data['email'] = email.toString();
-    data['name'] = name.toString();
-    data['gender'] = gender.toString();
-    data['dateOfBirth'] = dateOfBirth.toString();
-    data['address'] = address.toString();
-    data['phone'] = phone.toString();
-    data['avatarUrl'] = avatarUrl.toString();
-    data['roleId'] = roleId.toString();
-    data['sectionId'] = sectionId.toString();
-    data['isActive'] = isActive.toString();
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$AccountToJson(this);
+
+  Map<String, String> toJson2() => <String, String>{
+      'AccountId': accountId.toString(),
+      'Email': email.toString(),
+      'Name': name.toString(),
+      'Gender': gender.toString(),
+      'DateOfBirth': dateOfBirth!.toString(),
+      //'Address': address!.toString(),
+      'Phone': phone.toString(),
+      'AvatarUrl': avatarUrl.toString(),
+      'RoleId': roleId.toString(),
+      //'SectionId': sectionId!.toString(),
+      'IsActive': isActive.toString(),
+    };
 }

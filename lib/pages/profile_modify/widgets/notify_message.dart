@@ -14,6 +14,7 @@ class NotifyMessage extends StatelessWidget {
       content: Text(text),
       duration: const Duration(seconds: 4),
       dismissDirection: DismissDirection.down,
+      
     );
   }
 }

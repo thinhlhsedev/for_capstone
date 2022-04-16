@@ -13,7 +13,7 @@ class CategoryList extends StatefulWidget {
 
 class _CategoryListState extends State<CategoryList> {
   int selectedIndex = 0;
-  List categories = ['All Order', 'Processing', 'Completed', 'Canceled'];
+  List categories = ['Tất cả đơn', 'Chờ xác nhận', 'Đang xử lý', 'Đang vận chuyển', 'Đã hoàn tất', 'Đã hủy'];
 
   @override
   Widget build(BuildContext context) {

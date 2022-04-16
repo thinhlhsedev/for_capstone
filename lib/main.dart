@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:for_capstone/domains/utils/account_preference.dart';
-import 'package:for_capstone/pages/home/views/home_page.dart';
-import 'package:for_capstone/pages/profile/views/profile_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/pages/signin/views/sign_in_page.dart';
 import 'constants.dart';
-import 'pages/profile_modify/widgets/full_name_modify.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AccountPreference.init();
+  await Firebase.initializeApp();
+  await UtilsPreference.init();
   runApp(const MyApp());
 }
 

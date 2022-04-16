@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:for_capstone/pages/product/widgets/add_to_cart_btn.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:for_capstone/pages/home/widgets/cart_with_number.dart';
 
 import '../../../constants.dart';
-import '../../cart/views/cart_page.dart';
 import '../widgets/body.dart';
 
 class ProductPage extends StatelessWidget {
@@ -14,7 +13,16 @@ class ProductPage extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(context),
       body: const Body(),
-      bottomNavigationBar: const AddToCartBtn(),
+      floatingActionButton: buildFloatingBtn(), 
+    );
+  }
+
+  FloatingActionButton buildFloatingBtn() {
+    return FloatingActionButton.extended(
+      onPressed: () {},
+      backgroundColor: kPrimaryColor,
+      icon: const Icon(Icons.add_shopping_cart_outlined, size: 23),
+      label: const Text(""),
     );
   }
 
@@ -23,20 +31,10 @@ class ProductPage extends StatelessWidget {
       backgroundColor: kPrimaryColor,
       elevation: 0,
       title: const Text(
-        "Products",
+        "Bếp Gas",
       ),
-      actions: [
-        IconButton(
-          icon: SvgPicture.asset("assets/icons/shopping_cart.svg"),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CartPage(),
-              ),
-            );
-          },
-        ),       
+      actions: const [
+        CartWithNumber(),
       ],
     );
   }

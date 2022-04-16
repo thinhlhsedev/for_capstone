@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "643601328077",
+    "project_id": "sunny-effort-338709",
+    "storage_bucket": "sunny-effort-338709.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643601328077:android:afb6487fb9cf59fffe8684",
+        "android_client_info": {
+          "package_name": "com.example.for_capstone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "643601328077-nsvo44buh02ng1qlqgolkau1vt22o9pc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.for_capstone",
+            "certificate_hash": "e60d5573b065eb0f44ae11bdf29b223320940476"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg12f9SIH3d7q2k5CNQ1jiQtvFsbSyrzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

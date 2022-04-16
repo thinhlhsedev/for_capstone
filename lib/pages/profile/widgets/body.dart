@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:for_capstone/domains/utils/account_preference.dart';
+import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/pages/signin/views/sign_in_page.dart';
-
 
 import '../../../domains/api/api_google.dart';
 import '../../profile_modify/views/profile_modify_page.dart';
@@ -25,8 +24,8 @@ class _BodyState extends State<Body> {
 
   @override
   void initState() {
-    super.initState();
-    tmpDate = AccountPreference.getDOB()!.substring(0, 10);
+    super.initState();    
+    tmpDate = UtilsPreference.getDOB()!.substring(0, 10);
     selectedDate = DateTime.parse(tmpDate);
     firstDate = selectedDate;
   }
@@ -40,8 +39,8 @@ class _BodyState extends State<Body> {
           const ProfilePic(),
           const SizedBox(height: 20),
           ProfileMenu(
-            titleText: "Full Name",
-            contentText: AccountPreference.getDisplayname() ?? "",
+            titleText: "Họ Và Tên",
+            contentText: UtilsPreference.getDisplayname() ?? "",
             icon: "assets/icons/user.svg",
             press: () => {
               Navigator.push(
@@ -55,7 +54,7 @@ class _BodyState extends State<Body> {
             },
           ),
           ProfileMenu(
-            titleText: "Birthday",
+            titleText: "Ngày Sinh",
             contentText: getDate(tmpDate),
             icon: "assets/icons/calendar.svg",
             press: () {
@@ -63,12 +62,12 @@ class _BodyState extends State<Body> {
             },
           ),
           ProfileMenu(
-            titleText: "Gender",
-            contentText: AccountPreference.getGender() == null
-                ? AccountPreference.getGender() == "true"
-                    ? "Male"
-                    : "Female"
-                : "Empty",
+            titleText: "Giới Tính",
+            contentText: UtilsPreference.getGender() != null
+                ? UtilsPreference.getGender() == "true"
+                    ? "Nam"
+                    : "Nữ"
+                : "Empty",                
             icon: "assets/icons/gender.svg",
             press: () {
               Navigator.push(
@@ -82,8 +81,8 @@ class _BodyState extends State<Body> {
             },
           ),
           ProfileMenu(
-            titleText: "Phone",
-            contentText: AccountPreference.getPhone() ?? "",
+            titleText: "Số Điện Thoại",
+            contentText: UtilsPreference.getPhone() ?? "",
             icon: "assets/icons/address_book.svg",
             press: () {
               Navigator.push(
@@ -97,8 +96,8 @@ class _BodyState extends State<Body> {
             },
           ),
           ProfileMenu(
-            titleText: "Email",
-            contentText: AccountPreference.getEmail() ?? "",
+            titleText: "Địa Chỉ Email",
+            contentText: UtilsPreference.getEmail() ?? "",
             icon: "assets/icons/envelope.svg",
             press: () {
               Navigator.push(
@@ -112,7 +111,7 @@ class _BodyState extends State<Body> {
             },
           ),
           ProfileMenu(
-            titleText: "Log Out",
+            titleText: "Đăng Xuất",
             contentText: "",
             icon: "assets/icons/log_out.svg",
             press: () {

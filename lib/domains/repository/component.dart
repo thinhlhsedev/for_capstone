@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'component.g.dart';
+
+@JsonSerializable()
 class Component {
   String? componentId;
   String? componentName;
@@ -22,31 +27,7 @@ class Component {
       this.weight,
       this.description});
 
-  Component.fromJson(Map<String, dynamic> json) {
-    componentId = json['componentId'];
-    componentName = json['componentName'];
-    amount = json['amount'];
-    imageUrl = json['imageUrl'];
-    status = json['status'];
-    substance = json['substance'];
-    size = json['size'];
-    color = json['color'];
-    weight = json['weight'];
-    description = json['description'];
-  }
+  factory Component.fromJson(Map<String, dynamic> json) => _$ComponentFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['componentId'] = componentId;
-    data['componentName'] = componentName;
-    data['amount'] = amount;
-    data['imageUrl'] = imageUrl;
-    data['status'] = status;
-    data['substance'] = substance;
-    data['size'] = size;
-    data['color'] = color;
-    data['weight'] = weight;
-    data['description'] = description;
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$ComponentToJson(this);
 }

@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'order.g.dart';
+
+@JsonSerializable()
 class Order {
   int? orderId;
   int? accountId;
@@ -6,6 +11,7 @@ class Order {
   String? status;
   String? note;
   bool? isShorTerm;
+  String? customerAddress;
 
   Order(
       {this.orderId,
@@ -14,27 +20,10 @@ class Order {
       this.expiryDate,
       this.status,
       this.note,
-      this.isShorTerm});
+      this.isShorTerm,
+      this.customerAddress});
 
-  Order.fromJson(Map<String, dynamic> json) {
-    orderId = json['orderId'];
-    accountId = json['accountId'];
-    totalPrice = json['totalPrice'];
-    expiryDate = json['expiryDate'];
-    status = json['status'];
-    note = json['note'];
-    isShorTerm = json['isShorTerm'];
-  }
+  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['orderId'] = orderId;
-    data['accountId'] = accountId;
-    data['totalPrice'] = totalPrice;
-    data['expiryDate'] = expiryDate;
-    data['status'] = status;
-    data['note'] = note;
-    data['isShorTerm'] = isShorTerm;
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$OrderToJson(this);
 }

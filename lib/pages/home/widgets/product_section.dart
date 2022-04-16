@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'product_card.dart';
 
-class Product extends StatelessWidget {
-  const Product({
+class ProductSection extends StatelessWidget {
+  const ProductSection({
     Key? key,
   }) : super(key: key);
 
@@ -14,19 +14,19 @@ class Product extends StatelessWidget {
         ProductCard(
           image: "assets/images/gas.png",
           title: "Gas 1",
-          number: 3,
+          number: 1,
           price: 440,
         ),
         ProductCard(
           image: "assets/images/gas.png",
           title: "Gas 2",
-          number: 4,
+          number: 1,
           price: 440,
         ),
         ProductCard(
           image: "assets/images/gas.png",
           title: "Gas 3",
-          number: 5,
+          number: 1,
           price: 440,
         ),
       ],

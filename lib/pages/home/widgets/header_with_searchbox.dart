@@ -11,7 +11,6 @@ class HeaderWithSearchBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {    
-    SizeConfig().init(context);
     return Container(
       margin: const EdgeInsets.only(bottom: kDefaultPadding * 2.5),
       // It will cover 20% of our total height
@@ -36,15 +35,10 @@ class HeaderWithSearchBox extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Welcome to GSP",
+                  "Bếp Gas Uyên Phát",
                   style: Theme.of(context).textTheme.headline5?.copyWith(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-                // const Spacer(),
-                // Image.asset(
-                //   "assets/images/logo.png",
-                //   color: Colors.white,
-                //   ),
               ],
             ),
           ),
@@ -63,12 +57,12 @@ class HeaderWithSearchBox extends StatelessWidget {
                 boxShadow: const [kDefaultShadow],               
               ),
               child: Row(
-                children: <Widget>[
+                children: [
                   Expanded(
                     child: TextField(
                       onChanged: (value) {},
                       decoration: InputDecoration(
-                        hintText: "Search",
+                        hintText: "Tìm kiếm",
                         hintStyle: TextStyle(
                           color: kPrimaryColor.withOpacity(0.5),
                         ),

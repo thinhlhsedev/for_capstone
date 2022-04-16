@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:for_capstone/pages/home/widgets/product_section.dart';
+import 'package:for_capstone/pages/home/widgets/title_only.dart';
 
 import '../../../constants.dart';
-
 import '../../product/views/product_page.dart';
-import 'product.dart';
 import 'header_with_searchbox.dart';
-import 'component.dart';
+import 'recommend_section.dart';
 import 'title_with_btn.dart';
 
 class Body extends StatelessWidget {
@@ -16,20 +16,14 @@ class Body extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           const HeaderWithSearchBox(),
+          const TitleOnly(
+            title: "Các sản phẩm tiêu biểu",
+          ),
+          const RecommendSection(),
           TitleWithMoreBtn(
-              title: "Components",
-              press: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => ()),
-                //   ),
-              }),
-          const Component(),
-          TitleWithMoreBtn(
-              title: "Products",
+              title: "Bếp gas",
               press: () {
                 Navigator.push(
                   context,
@@ -38,7 +32,7 @@ class Body extends StatelessWidget {
                   ),
                 );
               }),
-          const Product(),
+          const ProductSection(),
           const SizedBox(height: kDefaultPadding / 2),
         ],
       ),

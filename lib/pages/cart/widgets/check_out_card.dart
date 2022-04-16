@@ -49,13 +49,13 @@ class CheckoutCard extends StatelessWidget {
                   child: SvgPicture.asset("assets/icons/receipt.svg"),
                 ),
                 const Spacer(),
-                // const Text("Add voucher code"),
-                // const SizedBox(width: 10),
-                // const Icon(
-                //   Icons.arrow_forward_ios,
-                //   size: 12,
-                //   color: kTextColor,
-                // )
+                const Text("Thêm voucher: "),
+                const SizedBox(width: 10),
+                const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 12,
+                  color: kTextColor,
+                )
               ],
             ),
             SizedBox(height: getProportionateScreenHeight(20)),
@@ -64,7 +64,7 @@ class CheckoutCard extends StatelessWidget {
               children: [
                 const Text.rich(
                   TextSpan(
-                    text: "Total:\n",
+                    text: "Tổng tiền:\n",
                     children: [
                       TextSpan(
                         text: "\$337.15",
@@ -81,7 +81,7 @@ class CheckoutCard extends StatelessWidget {
                         textStyle: const TextStyle(fontSize: 18)),
                     onPressed: () {},
                     child: const Text(
-                      "Check Out",
+                      "Xác nhận đơn",
                     ),
                   ),
                 ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:for_capstone/constants.dart';
 
+import '../../../domains/utils/utils_preference.dart';
+
 class ProfilePic extends StatelessWidget {
   const ProfilePic({
     Key? key,
@@ -14,36 +16,14 @@ class ProfilePic extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         clipBehavior: Clip.none,
-        children: const [
+        children: [
           CircleAvatar(
             child: CircleAvatar(
-              backgroundImage: AssetImage("assets/images/profile.png"),         
+              backgroundImage: NetworkImage(UtilsPreference.getPhoto() ?? ""),
               maxRadius: 107,
-            ),            
+            ),
             backgroundColor: kPrimaryColor,
           ),
-          // Positioned(
-          //   right: -16,
-          //   bottom: 0,
-          //   child: SizedBox(
-          //     height: 46,
-          //     width: 46,
-          //     child: TextButton(
-          //       style: TextButton.styleFrom(
-          //         shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.circular(50),
-          //           side: const BorderSide(color: Colors.white),
-          //         ),
-          //         primary: Colors.white,
-          //         backgroundColor: const Color(0xFFF5F6F9),
-          //       ),
-          //       onPressed: () {
-
-          //       },
-          //       child: SvgPicture.asset("assets/icons/camera.svg"),
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );

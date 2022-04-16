@@ -31,13 +31,13 @@ class ProfileMenuPadding extends StatelessWidget {
             SizedBox(
               child: SvgPicture.asset(
                 icon,
-                color: Colors.grey[500],
+                color: Colors.black54,
                 width: 22,
               ),
             ),
             const SizedBox(width: 20),
             Expanded(child: type),
-            const Icon(Icons.arrow_forward_ios),
+            const Icon(Icons.arrow_forward_ios, color: Colors.black54),
           ],
         ),
       ),

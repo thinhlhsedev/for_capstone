@@ -29,7 +29,7 @@ class TitleWithMoreBtn extends StatelessWidget {
             ),
             onPressed: press,
             child: const Text(
-              "More",
+              "Thêm",
               style: TextStyle(
                 color: Colors.white,                          
               ),              

@@ -1,4 +1,4 @@
 class ApiUrl {
   static const String scheme =  "https";
-  static const String host =  "98af-171-250-246-4.ngrok.io";  
+  static const String host =  "f4ff-45-122-244-165.ngrok.io";  
 }

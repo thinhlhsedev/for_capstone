@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
-import '../../../domains/utils/account_preference.dart';
+import '../../../domains/utils/utils_preference.dart';
 import '../../../size_config.dart';
 
 class CupertinoSheet extends StatefulWidget {
@@ -21,7 +21,7 @@ class _CupertinoSheetState extends State<CupertinoSheet> {
   @override
   void initState() {
     super.initState();
-    tmpDate = AccountPreference.getDOB()!.substring(0, 10);
+    tmpDate = UtilsPreference.getDOB()!.substring(0, 10);
     selectedDate = DateTime.parse(tmpDate);
     firstDate = selectedDate;
     isButtonActive = false;

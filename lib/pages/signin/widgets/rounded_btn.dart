@@ -19,10 +19,7 @@ class RoundedButton extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       width: SizeConfig.screenWidth * 0.8,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(29),
-        child: newElevatedButton(),
-      ),
+      child: newElevatedButton(),
     );
   }
 
@@ -39,6 +36,7 @@ class RoundedButton extends StatelessWidget {
             fontSize: 17,
             fontWeight: FontWeight.w500,
           ),
+          textAlign: TextAlign.center,
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         leading: SvgPicture.asset(
@@ -48,7 +46,12 @@ class RoundedButton extends StatelessWidget {
       ),
       onPressed: press,
       style: ElevatedButton.styleFrom(
-        primary: Colors.white,        
+        primary: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+          side: const BorderSide(color: kPrimaryColor, width: 1.5),
+        ),
+        elevation: 2,
       ),
     );
   }

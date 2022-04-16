@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../gasstove_detail/views/gasstove_detail_page.dart';
-import 'component_card.dart';
+import 'recommend_card.dart';
 
-class Component extends StatelessWidget {
-  const Component({
+class RecommendSection extends StatelessWidget {
+  const RecommendSection({
     Key? key,
   }) : super(key: key);
 
@@ -14,10 +14,9 @@ class Component extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: <Widget>[
-          ComponentCard(
+          RecommendCard(
             image: "assets/images/gas.png",
             title: "Gas 1",
-            country: "Russia",
             price: 440,
             press: () {
               Navigator.push(
@@ -28,10 +27,9 @@ class Component extends StatelessWidget {
               );
             },
           ),
-          ComponentCard(
+          RecommendCard(
             image: "assets/images/gas.png",
             title: "Gas 2",
-            country: "Viet Nam",
             price: 440,
             press: () {
               Navigator.push(
@@ -42,10 +40,9 @@ class Component extends StatelessWidget {
               );
             },
           ),
-          ComponentCard(
+          RecommendCard(
             image: "assets/images/gas.png",
             title: "Gas 3",
-            country: "Viet Nam",
             price: 440,
             press: () {
               Navigator.push(
@@ -61,5 +58,3 @@ class Component extends StatelessWidget {
     );
   }
 }
-
-

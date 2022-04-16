@@ -1,15 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:for_capstone/constants.dart';
-
-import 'package:for_capstone/domains/utils/account_preference.dart';
-import 'package:for_capstone/pages/profile_modify/widgets/notify_message.dart';
+import 'package:for_capstone/domains/api/api_method_mutipart.dart';
+import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/size_config.dart';
 
-import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/account.dart';
+import '../../profile/views/profile_page.dart';
 
 class FullNameModiFy extends StatefulWidget {
   const FullNameModiFy({
@@ -22,9 +19,9 @@ class FullNameModiFy extends StatefulWidget {
 
 class _FullNameModiFyState extends State<FullNameModiFy> {
   TextEditingController textFieldController =
-      TextEditingController(text: AccountPreference.getDisplayname());
+      TextEditingController(text: UtilsPreference.getDisplayname());
   bool isButtonActive = false;
-  late String newName, tmpText;
+  late String newName, tmpName;
   final formKey = GlobalKey<FormState>();
   late Account account;
 
@@ -33,9 +30,9 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
     super.initState();
     textFieldController.addListener(() {
       var isButtonActive = textFieldController.text.isNotEmpty;
-      tmpText = AccountPreference.getDisplayname() ?? "";
+      tmpName = UtilsPreference.getDisplayname() ?? "";
       setState(() {
-        if (textFieldController.text == tmpText) {
+        if (textFieldController.text == tmpName) {
           isButtonActive = false;
         }
         this.isButtonActive = isButtonActive;
@@ -99,8 +96,24 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
                         final isValid = formKey.currentState!.validate();
                         if (isValid) {
                           formKey.currentState!.save();
+
+                          Account account = Account.fromJson(
+                            jsonDecode(UtilsPreference.getFullAccount() ?? ""),
+                          );
+
+                          account.name = newName;
+
+                          if (put("updateAccount", account).toString() ==
+                              "Ok") {
+                            UtilsPreference.setAccount(account);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ProfilePage(),
+                              ),
+                            );
+                          }
                         }
-                        await update();
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
@@ -127,21 +140,6 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
     );
   }
 
-  Future<void> update() async {
-    var account =
-        await get("getAccountByEmail/" + (AccountPreference.getEmail() ?? ""));    
-    account.name = newName;
-    var result = await put("https://98af-171-250-246-4.ngrok.io/updateAccount", account);
-    if (result == "Update Successfully") {
-      var updateAccount = await get(
-          "getAccountByEmail/" + (AccountPreference.getEmail() ?? ""));
-      AccountPreference.setAccount(updateAccount);
-      const NotifyMessage(
-        text: "Update successfully",
-      );
-    }
-  }
-
   checkText(String text) {
     const namePattern = r'[^?!0-9$&+,:;=?@#|' '<>.^*()%!-]* ';
     final nameRegExp = RegExp(namePattern);
@@ -158,13 +156,9 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
     }
   }
 
-  Future<Account> get(String uri) async {
-    var jsonData = await callApi(uri, "get");
-    return Account.fromJson(jsonData);
-  }
-
   Future<String> put(String uri, Account account) async {
-    var jsonData = await callApi(uri, "put", bodyParams: account.toJson(), header: {'Content-Type':'application/json'});
-    return jsonDecode(jsonData);
+    var jsonData =
+        await callApiMultipart(uri, "put", bodyParams: account.toJson2());
+    return jsonData;
   }
 }

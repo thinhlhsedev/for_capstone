@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../domains/utils/utils_preference.dart';
 import '../../cart/views/cart_page.dart';
 
 class CartWithNumber extends StatelessWidget {
@@ -12,7 +14,7 @@ class CartWithNumber extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        IconButton(
+        IconButton(                    
           icon: SvgPicture.asset("assets/icons/shopping_cart.svg"),
           onPressed: () {
             Navigator.push(
@@ -31,12 +33,11 @@ class CartWithNumber extends StatelessWidget {
             width: 18,
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.white),
-              child: const Center(
+                  borderRadius: BorderRadius.circular(16), color: Colors.white),
+              child: Center(
                 child: Text(
-                  "3",
-                  style: TextStyle(
+                  getTotalItem().toString(),
+                  style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w500),
                 ),
               ),
@@ -45,5 +46,10 @@ class CartWithNumber extends StatelessWidget {
         )
       ],
     );
+  }
+
+  getTotalItem() {
+    List list = jsonDecode(UtilsPreference.getCartInfo()!);
+    return list.length;
   }
 }
