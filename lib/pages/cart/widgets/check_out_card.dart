@@ -16,7 +16,7 @@ class CheckoutCard extends StatelessWidget {
         vertical: getProportionateScreenWidth(15),
         horizontal: getProportionateScreenWidth(30),
       ),
-      // height: 174,
+      //height: 174,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.only(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:for_capstone/constants.dart';
+import 'package:for_capstone/domains/api/api_method_mutipart.dart';
 import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/pages/signin/widgets/background.dart';
 import 'package:for_capstone/size_config.dart';
@@ -8,10 +10,10 @@ import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/account.dart';
 import '../../../domains/repository/cart.dart';
 import '../../home/views/home_page.dart';
-import 'rounded_btn.dart';
+import 'rounded_icon_btn.dart';
 
 class Body extends StatefulWidget {
-  Body({Key? key}) : super(key: key);
+  const Body({Key? key}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -49,12 +51,18 @@ class _BodyState extends State<Body> {
                       isLoading = true;
                     });
                     await signIn(context);
-                    setState((){
-                       isLoading=false;
+                    setState(() {
+                      isLoading = false;
                     });
                   },
                 )
-              : const Center(child: CircularProgressIndicator()),
+              : const Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                    color: kPrimaryColor,
+                    strokeWidth: 6,
+                  ),
+                ),
           SizedBox(height: SizeConfig.screenHeight * 0.03),
         ],
       ),
@@ -70,9 +78,23 @@ class _BodyState extends State<Body> {
         UtilsPreference.setAccount(accountFetch);
         UtilsPreference.setPhoto(account.photoUrl!);
 
-        var cartFetch = await getCart(
-            "getCartByAccountId/" + accountFetch.accountId.toString());
-        UtilsPreference.setCart(cartFetch);
+        try {
+          var cartFetch = await getCart(
+              "getCartByAccountId/" + accountFetch.accountId.toString());
+          UtilsPreference.setCart(cartFetch);
+        } on Exception {
+          try {
+            var cartFetch = Cart(accountId: accountFetch.accountId);
+            addCart("addCart", cartFetch);
+          } on Exception {
+            ScaffoldMessenger.of(context).showSnackBar(
+              buildSnackBar("Create cart failed"),
+            );
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            buildSnackBar("Cart is error"),
+          );
+        }
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const HomePage()),
@@ -96,6 +118,12 @@ class _BodyState extends State<Body> {
 
   Future<Cart> getCart(String uri) async {
     var jsonData = await callApi(uri, "get");
+    return Cart.fromJson(jsonData);
+  }
+
+  Future<Cart> addCart(String uri, Cart cart) async {
+    var jsonData =
+        await callApiMultipart(uri, "post", bodyParams: cart.toJson2());
     return Cart.fromJson(jsonData);
   }
 

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:for_capstone/pages/home/widgets/product_section.dart';
-import 'package:for_capstone/pages/home/widgets/title_only.dart';
 
 import '../../../constants.dart';
 import '../../product/views/product_page.dart';
-import 'header_with_searchbox.dart';
-import 'recommend_section.dart';
+import 'header_with_banner.dart';
 import 'title_with_btn.dart';
 
 class Body extends StatelessWidget {
@@ -17,11 +15,7 @@ class Body extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const HeaderWithSearchBox(),
-          const TitleOnly(
-            title: "Các sản phẩm tiêu biểu",
-          ),
-          const RecommendSection(),
+          const HeaderWithBanner(),
           TitleWithMoreBtn(
               title: "Bếp gas",
               press: () {

@@ -24,9 +24,6 @@ class ProfileModifyPage extends StatelessWidget {
       backgroundColor: kPrimaryColor,
       elevation: 0,
       title: Text(text),
-      actions: [
-        
-      ],
     );
   }
 }

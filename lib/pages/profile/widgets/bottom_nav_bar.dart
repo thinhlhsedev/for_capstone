@@ -1,67 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:for_capstone/constants.dart';
 import 'package:for_capstone/pages/home/views/home_page.dart';
+import 'package:for_capstone/pages/order/views/order_page.dart';
 import 'package:for_capstone/pages/profile/views/profile_page.dart';
 
-import '../../../constants.dart';
-import '../../order/views/order_page.dart';
 
-class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({
-    Key? key,
-  }) : super(key: key);
+class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({Key? key}) : super(key: key);
 
   @override
+  State<BottomNavBar> createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  late int currentIndex;
+  final screen = const [HomePage(), OrderPage(), ProfilePage()];
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = 2;
+  }
+  
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(
-        left: kDefaultPadding * 2,
-        right: kDefaultPadding * 2,
-        //bottom: kDefaultPadding,
-      ),
-      height: 65,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          IconButton(
-            icon: SvgPicture.asset("assets/icons/home.svg",),
-            onPressed: () {              
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomePage(),
-                ),
-              );
-            },
-            
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: kPrimaryColor,
+      selectedItemColor: Colors.white,
+      showUnselectedLabels: false,
+      showSelectedLabels: false,
+      iconSize: 28,
+      onTap: (index) => setState(() {   
+        currentIndex = index;     
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => screen[currentIndex],
           ),
-          IconButton(
-            icon: SvgPicture.asset("assets/icons/activities.svg"),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const OrderPage(),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: SvgPicture.asset("assets/icons/user.svg"),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
+        );
+      }),
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: "Home",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.shop),
+          label: "Order",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_box),
+          label: "Profile",
+        ),
+      ],
     );
   }
 }
+

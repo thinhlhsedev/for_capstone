@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:for_capstone/pages/home/widgets/cart_with_number.dart';
 
 import '../../../constants.dart';
@@ -14,15 +13,16 @@ class ProductPage extends StatelessWidget {
       appBar: buildAppBar(context),
       body: const Body(),
       floatingActionButton: buildFloatingBtn(), 
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      //bottomNavigationBar: ,
     );
   }
 
   FloatingActionButton buildFloatingBtn() {
-    return FloatingActionButton.extended(
+    return FloatingActionButton(
       onPressed: () {},
       backgroundColor: kPrimaryColor,
-      icon: const Icon(Icons.add_shopping_cart_outlined, size: 23),
-      label: const Text(""),
+      child: const Icon(Icons.add_shopping_cart_outlined, size: 25,),
     );
   }
 
@@ -33,6 +33,7 @@ class ProductPage extends StatelessWidget {
       title: const Text(
         "Bếp Gas",
       ),
+      centerTitle: true,
       actions: const [
         CartWithNumber(),
       ],

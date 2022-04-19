@@ -1,30 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:for_capstone/pages/gasstove_detail/views/gasstove_detail_page.dart';
+import 'package:for_capstone/pages/product/widgets/search_box.dart';
 
 import '../../../constants.dart';
 import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/product.dart';
 import 'product_card.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
   @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  late List<Product> listProduct = [];
+  late String searchValue;
+
+  @override
+  void initState() {
+    super.initState();
+    searchValue = "";
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20),
-      child: Column(
-        children: [
-          loadProductData("getProducts"),          
-        ],
-      ),
+    return Column(
+      children: [
+        buildSearch(),
+        searchValue == ""
+            ? Expanded(
+                child: loadProductData("getProducts/Active"),
+              )
+            : Expanded(
+                child: buildProductList(listProduct),
+              ),
+      ],
     );
   }
+
+  SearchBox buildSearch() => SearchBox(onChanged: (value) {
+        setState(() {
+          searchValue = value;
+          searchProduct(searchValue);
+        });
+      });
 
   FutureBuilder<dynamic> loadProductData(String uri) {
     return FutureBuilder<dynamic>(
       future: get(uri),
       builder: (context, snapshot) {
-        final products = snapshot.data;
+        listProduct = snapshot.data;
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return const Center(
@@ -45,9 +72,7 @@ class Body extends StatelessWidget {
                 ),
               );
             } else {
-              return Expanded(
-                child: buildProductList(products),
-              );
+              return buildProductList(listProduct);
             }
         }
       },
@@ -59,19 +84,18 @@ class Body extends StatelessWidget {
         itemCount: productList.length,
         itemBuilder: (context, index) {
           final product = productList[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+          return Container(
+            padding:
+                const EdgeInsets.only(bottom: 20, left: 20, right: 20, top: 10),
             child: ProductCard(
               product: product,
               press: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => OrderDetailPage(
-                //       orderId: order.orderId!,
-                //     ),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GasStoveDetailPage(product: product),
+                  ),
+                );
               },
             ),
           );
@@ -82,5 +106,27 @@ class Body extends StatelessWidget {
     var jsonData = await callApi(uri, "get");
     var list = jsonData.cast<Map<String, dynamic>>();
     return list.map<Product>((json) => Product.fromJson(json)).toList();
+  }
+
+  searchProduct(String query) {
+    if (listProduct.isEmpty) {
+      getProductList();
+    }
+    final suggestion = listProduct.where((product) {
+      final productName = product.productName!.toLowerCase();
+      final input = query.toLowerCase();
+
+      return productName.contains(input);
+    }).toList();
+    setState(() {
+      if (suggestion.isNotEmpty) {
+        listProduct = suggestion;
+        searchValue = query;
+      }
+    });
+  }
+
+  void getProductList() async {
+    listProduct = await get("getProducts/Active");
   }
 }

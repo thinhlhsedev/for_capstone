@@ -36,4 +36,13 @@ class Cart {
     }
     return data;
   }
+
+  Map<String, String> toJson2() {
+    final Map<String, String> data = <String, String>{};
+    data['cartId'] = cartId.toString();
+    if (cartInfo != null) {
+      data['cartInfo'] = cartInfo!.map((v) => v.toJson()).toList().toString();
+    }
+    return data;
+  }
 }

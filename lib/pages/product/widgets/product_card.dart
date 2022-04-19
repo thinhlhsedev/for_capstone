@@ -1,31 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:for_capstone/pages/gasstove_detail/views/gasstove_detail_page.dart';
 import 'package:for_capstone/pages/product/widgets/rounded_icon_btn.dart';
 
 import '../../../constants.dart';
 import '../../../domains/repository/product.dart';
 import '../../../size_config.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   const ProductCard({
     Key? key,
-    required this.product,
     required this.press,
+    required this.product,
   }) : super(key: key);
 
   final VoidCallback press;
   final Product product;
 
   @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  late int number;
+
+  @override
+  void initState() {
+    super.initState();
+    number = 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: const [kDefaultShadow]
-      ),
+          color: Colors.white70,
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: const [kDefaultShadow]),
       child: InkWell(
-        onTap: press,
+        onTap: widget.press,
         child: Row(
           children: [
             SizedBox(
@@ -38,7 +52,7 @@ class ProductCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.white,
                   ),
-                  child: Image.asset("assets/images/gas1.png"),
+                  child: Image.asset("assets/images/gas.png"),
                 ),
               ),
             ),
@@ -48,7 +62,7 @@ class ProductCard extends StatelessWidget {
               children: [
                 RichText(
                   text: TextSpan(
-                    text: product.productName ?? "",
+                    text: widget.product.productName ?? "",
                     style: const TextStyle(color: Colors.black, fontSize: 16),
                   ),
                   maxLines: 1,
@@ -56,7 +70,7 @@ class ProductCard extends StatelessWidget {
                 const SizedBox(height: 10),
                 RichText(
                   text: TextSpan(
-                    text: "\$${product.price}",
+                    text: "\$${widget.product.price}",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, color: kPrimaryColor),
                   ),
@@ -67,7 +81,13 @@ class ProductCard extends StatelessWidget {
                     RoundedIconBtn(
                       icon: Icons.remove,
                       showShadow: true,
-                      press: () {},
+                      press: () {
+                        setState(() {
+                          if (number > 0) {
+                            number--;
+                          }
+                        });
+                      },
                     ),
                     Container(
                       height: getProportionateScreenHeight(40),
@@ -75,21 +95,40 @@ class ProductCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: const Center(
-                        child: Text("1"),
+                      child: Center(
+                        child: Text(number.toString()),
                       ),
                     ),
                     RoundedIconBtn(
                       icon: Icons.add,
                       showShadow: true,
-                      press: () {},
+                      press: () {
+                        setState(() {
+                          number++;
+                        });
+                      },
                     ),
                   ],
                 )
               ],
             ),
             const Spacer(),
-            const Icon(Icons.arrow_forward_ios_outlined, color: Colors.black54),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        GasStoveDetailPage(product: widget.product),
+                  ),
+                );
+              },
+              child: SvgPicture.asset(
+                "assets/icons/information.svg",
+                height: 22,
+                color: kPrimaryColor,
+              ),
+            ),
           ],
         ),
       ),

@@ -27,9 +27,9 @@ class CartPage extends StatelessWidget {
         children: [
           const Text(
             "Giỏ Hàng",
-            style: TextStyle(color: Colors.white,
-
-            ),            
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
           Text(
             "Số lượng: " + getTotalItem().toString() + " sản phẩm",

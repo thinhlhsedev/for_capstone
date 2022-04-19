@@ -12,7 +12,7 @@ class SigninPage extends StatelessWidget {
     SizeConfig().init(context);
     UtilsPreference.init();
     return const Scaffold(
-      body: const Body(),
+      body: Body(),
     );
   }
 }

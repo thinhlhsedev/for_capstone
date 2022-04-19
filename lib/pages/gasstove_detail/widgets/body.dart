@@ -1,71 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:for_capstone/constants.dart';
+import 'package:for_capstone/pages/gasstove_detail/widgets/cart_counter.dart';
+import 'package:for_capstone/pages/gasstove_detail/widgets/price.dart';
+import 'package:for_capstone/size_config.dart';
 
-import '../../../constants.dart';
-import 'image_and_icon.dart';
-import 'title_and_price.dart';
+import '../../../domains/repository/product.dart';
+import 'add_to_cart.dart';
+import 'description.dart';
+import 'product_tile_with_image.dart';
 
 class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+  final Product product;
 
+  const Body({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
-        children: <Widget>[
-          ImageAndIcons(size: size),
-          const TitleAndPrice(title: "Angelica", country: "Russia", price: 440),
-          const SizedBox(height: kDefaultPadding),
-          Row(
-            children: <Widget>[
-              SizedBox(
-                width: size.width / 2,
-                height: 84,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                      ),
-                    ),
-                    backgroundColor: kPrimaryColor,
+        children: [
+          SizedBox(
+            height: SizeConfig.screenHeight * 0.774,
+            child: Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(
+                    top: SizeConfig.screenHeight * 0.3,
                   ),
-                  onPressed: () {},
-                  child: const Text(
-                    "Buy Now",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
+                  padding: EdgeInsets.only(
+                    top: SizeConfig.screenHeight * 0.04,
+                    left: kDefaultPadding,
+                    right: kDefaultPadding,
+                    bottom: kDefaultPadding,
+                  ),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(24),
+                      topLeft: Radius.circular(24),
                     ),
                   ),
-                ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  width: size.width / 2,
-                  height: 84,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                        ),
-                      ),
-                      backgroundColor: kPrimaryColor,
-                    ),
-                    onPressed: () {},
-                    child: const Text(
-                      "Description",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: kDefaultPadding / 2),
+                      Description(product: product),
+                      //const SizedBox(height: kDefaultPadding / 2),
+                      const Spacer(),
+                      Price(product: product),
+                      const SizedBox(height: kDefaultPadding),                      
+                      const CartCounter(),
+                    ],
                   ),
                 ),
-              ),
-            ],
-          ),
+                ProductTitleWithImage(product: product)
+              ],
+            ),
+          )
         ],
       ),
     );

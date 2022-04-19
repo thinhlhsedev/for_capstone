@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
+import '../../../domains/api/api_method.dart';
+import '../../../domains/repository/product.dart';
 import 'product_card.dart';
 
 class ProductSection extends StatelessWidget {
@@ -9,27 +12,64 @@ class ProductSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        ProductCard(
-          image: "assets/images/gas.png",
-          title: "Gas 1",
-          number: 1,
-          price: 440,
-        ),
-        ProductCard(
-          image: "assets/images/gas.png",
-          title: "Gas 2",
-          number: 1,
-          price: 440,
-        ),
-        ProductCard(
-          image: "assets/images/gas.png",
-          title: "Gas 3",
-          number: 1,
-          price: 440,
-        ),
-      ],
+    return loadProductData("getProducts/Active");
+  }
+
+  FutureBuilder<dynamic> loadProductData(String uri) {
+    return FutureBuilder<dynamic>(
+      future: get(uri),
+      builder: (context, snapshot) {
+        final products = snapshot.data;
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return const Center(
+              heightFactor: 6,
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.white,
+                color: kPrimaryColor,
+                strokeWidth: 6,
+              ),
+            );
+          default:
+            if (snapshot.hasError) {
+              return Center(
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
+                  child: Text(snapshot.error.toString()),
+                ),
+              );
+            } else {
+              return buildProductList(products);
+            }
+        }
+      },
     );
   }
+
+  Future<dynamic> get(String uri) async {
+    var jsonData = await callApi(uri, "get");
+    var list = jsonData.cast<Map<String, dynamic>>();
+    return list.map<Product>((json) => Product.fromJson(json)).toList();
+  }
+
+  ListView buildProductList(List<Product> productList) => ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          final product = productList[index];
+          return Padding(
+            padding: const EdgeInsets.only(
+              right: kDefaultPadding,
+              left: kDefaultPadding,
+              bottom: kDefaultPadding,
+            ),
+            child: ProductCard(
+              product: product,
+              press: () {},
+            ),
+          );
+        },
+      );
 }

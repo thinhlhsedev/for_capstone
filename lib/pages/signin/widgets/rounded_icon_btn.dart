@@ -51,7 +51,7 @@ class RoundedButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(18.0),
           side: const BorderSide(color: kPrimaryColor, width: 1.5),
         ),
-        elevation: 2,
+        elevation: 3,
       ),
     );
   }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:for_capstone/constants.dart';
 import 'package:for_capstone/pages/cart/widgets/cart_card.dart';
 
+import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/product.dart';
-import '../../../size_config.dart';
 
 class CartPanel extends StatefulWidget {
   const CartPanel({
@@ -18,30 +19,30 @@ class CartPanel extends StatefulWidget {
 }
 
 class _CartPanelState extends State<CartPanel> {
-  late List<Product> productList;
 
   @override
   void initState() {
     super.initState();
-    productList = widget.productList;
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+      padding: const EdgeInsets.only(
+          right: kDefaultPadding,
+          left: kDefaultPadding,
+          bottom: kDefaultPadding),
       child: ListView.builder(
-        itemCount: productList.length,
+        itemCount: widget.productList.length,
         itemBuilder: (context, index) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Dismissible(
-            key: Key(productList[index].productId.toString()),
+            key: Key(widget.productList[index].productId!),
             direction: DismissDirection.endToStart,
             onDismissed: (direction) {
               setState(() {
-                productList.removeAt(index);
-                
+                widget.productList.removeAt(index);
+                //UtilsPreference.setCartInfo(productList);
               });
             },
             background: Container(
@@ -57,10 +58,15 @@ class _CartPanelState extends State<CartPanel> {
                 ],
               ),
             ),
-            child: CartCard(product: productList[index]),
+            child: CartCard(product: widget.productList[index]),
           ),
         ),
       ),
     );
+  }
+
+  Future<Product> getAccount(String uri) async {
+    var jsonData = await callApi(uri, "get");
+    return Product.fromJson(jsonData);
   }
 }

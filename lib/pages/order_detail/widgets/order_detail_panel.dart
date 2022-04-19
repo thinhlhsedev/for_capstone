@@ -1,6 +1,7 @@
 import 'package:for_capstone/constants.dart';
 
 import 'package:flutter/material.dart';
+import 'package:for_capstone/pages/gasstove_detail/views/gasstove_detail_page.dart';
 import 'package:for_capstone/size_config.dart';
 import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/order_detail.dart';
@@ -28,7 +29,8 @@ class OrderDetailPanel extends StatelessWidget {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return Padding(
-              padding: EdgeInsets.only(top: 220, left: SizeConfig.screenWidth /2),
+              padding:
+                  EdgeInsets.only(top: 220, left: SizeConfig.screenWidth / 2),
               child: const CircularProgressIndicator(
                 backgroundColor: Colors.white,
                 color: kPrimaryColor,
@@ -66,9 +68,19 @@ class OrderDetailPanel extends StatelessWidget {
         itemCount: orderDetailList.length,
         itemBuilder: (context, index) {
           final orderDetail = orderDetailList[index];
-          return OrderDetailCard(
-            orderDetail: orderDetail,
-            press: () {},
+          return Padding(
+            padding: const EdgeInsets.only(bottom: kDefaultPadding),
+            child: OrderDetailCard(
+              orderDetail: orderDetail,
+              press: () {
+                      Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GasStoveDetailPage(product: orderDetail.product!),
+                  ),
+                );
+              },
+            ),
           );
         },
       );
