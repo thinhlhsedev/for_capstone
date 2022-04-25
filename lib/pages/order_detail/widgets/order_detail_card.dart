@@ -54,9 +54,8 @@ class OrderDetailCard extends StatelessWidget {
                   height: 160,
                   // image is square but we add extra 20 + 20 padding thats why width is 200
                   width: 200,
-                  child: const CircleAvatar(
-                    backgroundImage: AssetImage("assets/images/gas.png"),
-                    //NetworkImage(product.imageUrl ?? ""),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage("https://firebasestorage.googleapis.com/v0/b/gspspring2022.appspot.com/o/Images%2F"+orderDetail.product!.imageUrl),
                     maxRadius: 107,
                     backgroundColor: kPrimaryColor,
                   ),
@@ -76,19 +75,13 @@ class OrderDetailCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: kDefaultPadding),
-                      child: Text(
-                        "Tên: " + (orderDetail.product!.productName ?? "").toUpperCase(),
-                        style: Theme.of(context).textTheme.button,
-                      ),
+                      child: buildText(context, "Tên: ", orderDetail.product!.productName.toUpperCase()),                      
                     ),
                     const SizedBox(height: 10,),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: kDefaultPadding),
-                      child: Text(
-                        "Số lượng: " + (orderDetail.amount.toString()),
-                        style: Theme.of(context).textTheme.button,
-                      ),
+                      child: buildText(context, "Số lượng: ", orderDetail.amount.toString()),                      
                     ),                    
                     const Spacer(),
                     Container(
@@ -104,8 +97,8 @@ class OrderDetailCard extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        "Đơn giá: \$${orderDetail.price}",
-                        style: Theme.of(context).textTheme.button,
+                        "Đơn giá: " + getPrice(orderDetail.price!) + ".000 vnd",
+                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
                       ),
                     ),
                   ],
@@ -118,8 +111,46 @@ class OrderDetailCard extends StatelessWidget {
     );
   }
 
+  RichText buildText(BuildContext context, String title, String content) {
+    return RichText(
+      text: TextSpan(
+        text: title,
+        style:
+            Theme.of(context).textTheme.button!.copyWith(color: kPrimaryColor),
+        children: [
+          TextSpan(
+            text: content,
+            style: Theme.of(context)
+                .textTheme
+                .button!
+                .copyWith(color: Colors.grey[700]),
+          )
+        ],
+      ),
+    );
+  }
+
   Future<Product> get(String uri) async {
     var jsonData = await callApi(uri, "get");
     return Product.fromJson(jsonData);
+  }
+
+  String getPrice(double price){   
+    var tmp = ""; 
+    if (price >= 1000)
+    {
+      tmp = (price/1000).toString();
+      if (tmp.length == 3)
+      {
+        tmp = tmp + "00";
+      }
+      if (tmp.length == 4)
+      {
+        tmp = tmp + "0";
+      }
+    } else {
+      tmp = price.floor().toString();
+    }
+    return tmp;
   }
 }

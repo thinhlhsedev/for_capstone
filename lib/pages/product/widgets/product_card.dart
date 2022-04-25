@@ -52,7 +52,8 @@ class _ProductCardState extends State<ProductCard> {
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.white,
                   ),
-                  child: Image.asset("assets/images/gas.png"),
+                  child: Image.network("https://firebasestorage.googleapis.com/v0/b/gspspring2022.appspot.com/o/Images%2F"+widget.product.imageUrl),
+                  //asset("assets/images/gas.png"),
                 ),
               ),
             ),
@@ -62,7 +63,7 @@ class _ProductCardState extends State<ProductCard> {
               children: [
                 RichText(
                   text: TextSpan(
-                    text: widget.product.productName ?? "",
+                    text: widget.product.productName,
                     style: const TextStyle(color: Colors.black, fontSize: 16),
                   ),
                   maxLines: 1,
@@ -70,7 +71,7 @@ class _ProductCardState extends State<ProductCard> {
                 const SizedBox(height: 10),
                 RichText(
                   text: TextSpan(
-                    text: "\$${widget.product.price}",
+                    text: getPrice(widget.product.price) + ".000 vnd",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, color: kPrimaryColor),
                   ),
@@ -133,5 +134,24 @@ class _ProductCardState extends State<ProductCard> {
         ),
       ),
     );
+  }
+
+  String getPrice(double price){   
+    var tmp = ""; 
+    if (price >= 1000)
+    {
+      tmp = (price/1000).toString();
+      if (tmp.length == 3)
+      {
+        tmp = tmp + "00";
+      }
+      if (tmp.length == 4)
+      {
+        tmp = tmp + "0";
+      }
+    } else {
+      tmp = price.floor().toString();
+    }
+    return tmp;
   }
 }

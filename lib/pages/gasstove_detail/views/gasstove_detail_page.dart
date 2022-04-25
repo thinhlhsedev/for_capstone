@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:for_capstone/constants.dart';
-import 'package:for_capstone/pages/gasstove_detail/widgets/add_to_cart.dart';
 
 import '../../../domains/repository/product.dart';
 import '../widgets/body.dart';
@@ -22,7 +21,6 @@ class GasStoveDetailPage extends StatelessWidget {
       backgroundColor: kPrimaryColor,
       appBar: buildAppBar(context),
       body: Body(product: product),
-      bottomNavigationBar: AddToCart(product: product),
     );
   }
 

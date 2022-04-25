@@ -12,4 +12,9 @@ class CartProduct {
   factory CartProduct.fromJson(Map<String, dynamic> json) => _$CartProductFromJson(json);
 
   Map<String, dynamic> toJson() => _$CartProductToJson(this);
+
+  @override
+  String toString() {
+    return "{\"productId\":\"$productId\",\"amount\":${amount.toString()}}";
+  }
 }

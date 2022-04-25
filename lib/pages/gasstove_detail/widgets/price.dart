@@ -16,14 +16,14 @@ class Price extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-              text: "Price\n",
+              text: "Giá\n",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 33,
                 color: Colors.black.withOpacity(0.7),
               )),
           TextSpan(
-            text: "\$${product.price}",
+            text: getPrice(product.price) + ".000 vnd",
             style: const TextStyle(
               fontWeight: FontWeight.bold,
                 fontSize: 22,
@@ -33,5 +33,24 @@ class Price extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String getPrice(double price){   
+    var tmp = ""; 
+    if (price >= 1000)
+    {
+      tmp = (price/1000).toString();
+      if (tmp.length == 3)
+      {
+        tmp = tmp + "00";
+      }
+      if (tmp.length == 4)
+      {
+        tmp = tmp + "0";
+      }
+    } else {
+      tmp = price.floor().toString();
+    }
+    return tmp;
   }
 }

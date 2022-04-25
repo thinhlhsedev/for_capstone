@@ -15,12 +15,13 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  late List<Product> listProduct = [];
+  late List<Product> listProduct;
   late String searchValue;
 
   @override
   void initState() {
     super.initState();
+    listProduct = [];
     searchValue = "";
   }
 
@@ -113,7 +114,7 @@ class _BodyState extends State<Body> {
       getProductList();
     }
     final suggestion = listProduct.where((product) {
-      final productName = product.productName!.toLowerCase();
+      final productName = product.productName.toLowerCase();
       final input = query.toLowerCase();
 
       return productName.contains(input);

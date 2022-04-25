@@ -4,20 +4,20 @@ part 'product.g.dart';
 
 @JsonSerializable()
 class Product {
-  String? productId;
-  String? productName;
+  String productId;
+  String productName;
   int? amount;
-  double? price;
-  String? imageUrl;
+  double price;
+  String imageUrl;
   String? status;
   String? description;
 
   Product(
-      {this.productId,
-      this.productName,
+      {required this.productId,
+      required this.productName,
       this.amount,
-      this.price,
-      this.imageUrl,
+      required this.price,
+      required this.imageUrl,
       this.status,
       this.description});
 

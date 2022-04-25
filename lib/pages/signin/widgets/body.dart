@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:for_capstone/constants.dart';
-import 'package:for_capstone/domains/api/api_method_mutipart.dart';
 import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/pages/signin/widgets/background.dart';
 import 'package:for_capstone/size_config.dart';
@@ -9,7 +8,7 @@ import '../../../domains/api/api_google.dart';
 import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/account.dart';
 import '../../../domains/repository/cart.dart';
-import '../../home/views/home_page.dart';
+import '../../general/views/general_page.dart';
 import 'rounded_icon_btn.dart';
 
 class Body extends StatefulWidget {
@@ -73,40 +72,50 @@ class _BodyState extends State<Body> {
     final account = await GoogleSignInAPI.login();
 
     if (account != null) {
-      var accountFetch = await getAccount("getAccountByEmail/" + account.email);
-      if (accountFetch.isActive == true) {
-        UtilsPreference.setAccount(accountFetch);
-        UtilsPreference.setPhoto(account.photoUrl!);
+      try {
+        var accountFetch =
+            await getAccount("getAccountByEmail/" + account.email);        
+        if (accountFetch.isActive == true) {
+          UtilsPreference.setAccount(accountFetch);
+          UtilsPreference.setPhoto(account.photoUrl!);
 
-        try {
           var cartFetch = await getCart(
               "getCartByAccountId/" + accountFetch.accountId.toString());
-          UtilsPreference.setCart(cartFetch);
-        } on Exception {
-          try {
-            var cartFetch = Cart(accountId: accountFetch.accountId);
+
+          if (cartFetch.accountId != null) {            
+            UtilsPreference.setCart(cartFetch);
+          } else {
+            var cartFetch = Cart(accountId: accountFetch.accountId, cartInfo: null, totalPrice: 0);
+            UtilsPreference.setCart(cartFetch);
             addCart("addCart", cartFetch);
-          } on Exception {
-            ScaffoldMessenger.of(context).showSnackBar(
-              buildSnackBar("Create cart failed"),
-            );
           }
+
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const GeneralPage()),
+          );
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            buildSnackBar("Cart is error"),
+            buildSnackBar("Tài khoản của bạn bị khóa"),
           );
         }
-
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          buildSnackBar("Your account is locked"),
-        );
+      } on Exception catch (ex) {
+        if (ex.toString().contains("404") || ex.toString().contains("502")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            buildSnackBar("Vui lòng kiểm tra kết nối mạng"),
+          );
+        }
+        if (ex.toString().contains("400") || 
+        ex.toString().contains("Unexpected end of input (at character 1)")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            buildSnackBar("Tài khoản của bạn bị lỗi"),
+          );
+          GoogleSignInAPI.logout();          
+        }        
       }
     } else {
+      GoogleSignInAPI.logout();
       ScaffoldMessenger.of(context).showSnackBar(
-        buildSnackBar("Try to login by another account"),
+        buildSnackBar("Vui lòng đăng nhập bằng tài khoản khác"),
       );
     }
   }
@@ -123,7 +132,7 @@ class _BodyState extends State<Body> {
 
   Future<Cart> addCart(String uri, Cart cart) async {
     var jsonData =
-        await callApiMultipart(uri, "post", bodyParams: cart.toJson2());
+        await callApi(uri, "post", bodyParams: cart.toJson3());
     return Cart.fromJson(jsonData);
   }
 

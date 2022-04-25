@@ -83,7 +83,7 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
                 autofocus: true,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
-                  hintText: "Fill your phone number",
+                  hintText: "Điền số điện thoại của bạn",
                   contentPadding:
                       const EdgeInsets.only(top: 10, bottom: 10, left: 15),
                   border: const OutlineInputBorder(),
@@ -104,7 +104,7 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
                 ),
                 validator: PatternValidator(
                     r'((\+84)+(9|3|7|8|5)+([0-9]{8})\b)',
-                    errorText: "Enter a valid phone"),
+                    errorText: "Điền số điện thoại phù hợp"),
                 onSaved: (value) => setState(() {
                   newPhone = value!;
                 }),
@@ -139,7 +139,7 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
                               });
                               ScaffoldMessenger.of(context).showSnackBar(
                                 buildSnackBar(
-                                  "Enter a valid phone number",
+                                  "Điền số điện thoại phù hợp",
                                 ),
                               );
                             },
@@ -168,7 +168,7 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
                   primary: kPrimaryColor,
                 ),
                 child: const Text(
-                  "Save Changes",
+                  "Lưu thay đổi",
                   style: TextStyle(
                     fontWeight: FontWeight.w300,
                     fontSize: 16,
@@ -194,7 +194,7 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
                 autofocus: true,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
-                  hintText: "Fill your otp",
+                  hintText: "Nhập mã OTP",
                   contentPadding:
                       const EdgeInsets.only(top: 10, bottom: 10, left: 15),
                   border: const OutlineInputBorder(),
@@ -251,7 +251,7 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
                   primary: kPrimaryColor,
                 ),
                 child: const Text(
-                  "Save Changes",
+                  "Lưu thay đổi",
                   style: TextStyle(
                     fontWeight: FontWeight.w300,
                     fontSize: 16,

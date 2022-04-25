@@ -6,7 +6,6 @@ import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/size_config.dart';
 
 import '../../../domains/repository/account.dart';
-import '../../profile/views/profile_page.dart';
 
 class FullNameModiFy extends StatefulWidget {
   const FullNameModiFy({
@@ -59,7 +58,7 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
                 autofocus: true,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
-                  hintText: "Fill your full name",
+                  hintText: "Nhập tên đầy đủ của bạn",
                   contentPadding:
                       const EdgeInsets.only(top: 10, bottom: 10, left: 15),
                   border: const OutlineInputBorder(),
@@ -103,16 +102,11 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
 
                           account.name = newName;
 
-                          if (put("updateAccount", account).toString() ==
-                              "Ok") {
-                            UtilsPreference.setAccount(account);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ProfilePage(),
-                              ),
-                            );
-                          }
+                          put("updateAccount", account);
+                          UtilsPreference.setAccount(account);
+                          ScaffoldMessenger.of(context).showSnackBar(                            
+                            buildSnackBar("Đã lưu thay đổi"),
+                          );
                         }
                       }
                     : null,
@@ -126,7 +120,7 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
                   primary: kPrimaryColor,
                 ),
                 child: const Text(
-                  "Save Changes",
+                  "Lưu thay đổi",
                   style: TextStyle(
                     fontWeight: FontWeight.w300,
                     fontSize: 16,
@@ -145,12 +139,12 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
     final nameRegExp = RegExp(namePattern);
 
     if (!nameRegExp.hasMatch(text)) {
-      return "Enter a valid full name";
+      return "Nhập tên phù hợp";
     } else {
       var list = text.split(" ");
       list.remove(" ");
       if (list.length < 2) {
-        return "Full name need at least 2 words";
+        return "Tên của bạn cần ít nhất 2 từ";
       }
       return null;
     }
@@ -160,5 +154,13 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
     var jsonData =
         await callApiMultipart(uri, "put", bodyParams: account.toJson2());
     return jsonData;
+  }
+
+  SnackBar buildSnackBar(String text) {
+    return SnackBar(
+      content: Text(text),
+      duration: const Duration(seconds: 4),
+      dismissDirection: DismissDirection.down,
+    );
   }
 }

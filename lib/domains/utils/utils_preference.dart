@@ -15,6 +15,7 @@ class UtilsPreference {
   static const _keyPhone = "phone";
   static const _keyDOB = "dob";
   static const _keyGender = "gender";
+  static const _keyAddress = "address";
   static const _keyAccount = "account";
 
   static const _keyCartId = "cartId";
@@ -67,6 +68,12 @@ class UtilsPreference {
       await _preferences.setString(_keyPhone, gender);
 
   static String? getPhone() => _preferences.getString(_keyPhone);
+
+  //Address
+  static Future setAddress(String address) async =>
+      await _preferences.setString(_keyAddress, address);
+
+  static String? getAddress() => _preferences.getString(_keyAddress);
 
   //Account
   static Future setFullAccount(Account account) async =>

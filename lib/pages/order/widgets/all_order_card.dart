@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../constants.dart';
 import '../../../domains/repository/order.dart';
 
-class OrderCard extends StatelessWidget {
-  const OrderCard({
+class AllOrderCard extends StatelessWidget {
+  const AllOrderCard({
     Key? key,
     required this.order,
     required this.press,
@@ -19,14 +19,14 @@ class OrderCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(
         horizontal: kDefaultPadding,
       ),
-      height: 170,
+      height: 200,
       child: InkWell(
         onTap: press,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             Container(
-              height: 146,
+              height: 180,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(22),
                 color: kPrimaryColor,
@@ -41,7 +41,7 @@ class OrderCard extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 140,
+              height: 170,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -74,6 +74,13 @@ class OrderCard extends StatelessWidget {
                       "Loại: ",
                       order.isShorTerm == true ? "đơn lẻ" : "đơn định kì",
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: buildText(
+                        context, "Trạng thái: ", getStatus(order.status!)),
                   ),
                   const Spacer(),
                   Row(
@@ -159,6 +166,21 @@ class OrderCard extends StatelessWidget {
     Iterable<String> list = date.split("-").reversed;
     String result = list.first + "-" + list.elementAt(1) + "-" + list.last;
     return result;
+  }
+
+  String getStatus(String status) {
+    switch (status) {
+      case "Pending":
+        return "Chờ xác nhận";
+      case "Processing":
+        return "Đang xử lý";
+      case "Delivering":
+        return "Đang vận chuyển";
+      case "Completed":
+        return "Đã hoàn tất";
+      default:
+        return "Đã hủy";
+    }
   }
 
   String getPrice(double price){   

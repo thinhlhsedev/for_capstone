@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:for_capstone/size_config.dart';
 
 import '../../../constants.dart';
 import '../../../domains/repository/product.dart';
@@ -17,16 +16,17 @@ class ProductTitleWithImage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,        
         children: [
+          const SizedBox(height: 10),
           Text(
-            product.productName ?? "",
+            product.productName,
             style: Theme.of(context)
                 .textTheme
                 .headline4!
                 .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: kDefaultPadding),
+          const SizedBox(height: 10),
           Row(
             children: [
               const Expanded(
@@ -37,10 +37,11 @@ class ProductTitleWithImage extends StatelessWidget {
               Expanded(
                 flex: 6,
                 child: Hero(
-                  tag: "${product.productId}",
-                  child: Image.asset(
-                    "assets/images/gas.png",                    
-                    fit: BoxFit.cover,
+                  tag: product.productId,
+                  child: Image.network(
+                    "https://firebasestorage.googleapis.com/v0/b/gspspring2022.appspot.com/o/Images%2F" +
+                        product.imageUrl,
+                    height: 220,                                        
                   ),
                 ),
               )

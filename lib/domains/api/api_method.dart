@@ -5,7 +5,7 @@ import 'api_url.dart';
 
 Future<dynamic> callApi(String uri, String method,
     {Map<String, String>? header, Map<String, dynamic>? queryParams, 
-    Map<String, dynamic>? bodyParams}) async {
+    dynamic bodyParams}) async {
       
   try {
     var fullUri = Uri(
@@ -17,7 +17,7 @@ Future<dynamic> callApi(String uri, String method,
 
     switch (method) {
       case "get":
-        response = await http.get(fullUri, headers: header);
+        response = await http.get(fullUri, headers: header,);
         break;
       case "put":
         response = await http.put(fullUri, headers: header, body: bodyParams);
@@ -36,8 +36,13 @@ Future<dynamic> callApi(String uri, String method,
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception("Error request: $statusCode");
     }
-    var jsonData = jsonDecode(body);
-    return jsonData;
+    switch (method) {
+      case "get":
+      var jsonData = jsonDecode(body);
+      return jsonData;
+      default:
+      return response.body.toString();
+    }    
   } on Exception catch (ex) {
     throw Exception(ex.toString());
   }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:for_capstone/constants.dart';
+import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/size_config.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+
+import '../../../domains/repository/account.dart';
 
 class EmailModiFy extends StatefulWidget {
   const EmailModiFy({
@@ -13,17 +16,23 @@ class EmailModiFy extends StatefulWidget {
 }
 
 class _EmailModiFyState extends State<EmailModiFy> {
-  TextEditingController textFieldController = TextEditingController();
-  bool isButtonActive = true;
-  late String text, error;
+  TextEditingController textFieldController =
+      TextEditingController(text: UtilsPreference.getEmail());
+  bool isButtonActive = false;
+  late String newEmail, tmpEmail;
   final formKey = GlobalKey<FormState>();
+  late Account account;
 
   @override
   void initState() {
     super.initState();
     textFieldController.addListener(() {
-      final isButtonActive = textFieldController.text.isNotEmpty;
+      var isButtonActive = textFieldController.text.isNotEmpty;
+      tmpEmail = UtilsPreference.getEmail()!;
       setState(() {
+        if (textFieldController.text == tmpEmail) {
+          isButtonActive = false;
+        }
         this.isButtonActive = isButtonActive;
       });
     });
@@ -47,9 +56,8 @@ class _EmailModiFyState extends State<EmailModiFy> {
                 controller: textFieldController,
                 autofocus: true,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                decoration: InputDecoration(
-                  //alignLabelWithHint: true,
-                  hintText: "Fill your email",
+                decoration: InputDecoration(                  
+                  hintText: "Nhập email của bạn",
                   contentPadding:
                       const EdgeInsets.only(top: 10, bottom: 10, left: 15),
                   border: const OutlineInputBorder(),
@@ -66,9 +74,9 @@ class _EmailModiFyState extends State<EmailModiFy> {
                   prefixIcon: Icon(Icons.email_outlined,
                       color: Colors.red[300],),
                 ),
-                validator: EmailValidator(errorText: "Enter valid email"),
+                validator: EmailValidator(errorText: "Nhập email phù hợp"),
                 onSaved: (value) => setState(() {
-                  text = value!;
+                  newEmail = value!;
                 }),
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.done,
@@ -94,7 +102,7 @@ class _EmailModiFyState extends State<EmailModiFy> {
                   primary: kPrimaryColor,
                 ),
                 child: const Text(
-                  "Save Changes",
+                  "Lưu thay đổi",
                   style: TextStyle(
                     fontWeight: FontWeight.w300,
                     fontSize: 16,

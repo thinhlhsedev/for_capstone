@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/order.dart';
 import '../../order_detail/views/order_detail_page.dart';
+import 'all_order_card.dart';
 
 class OrderPanel extends StatelessWidget {
   const OrderPanel({
@@ -73,8 +74,29 @@ class OrderPanel extends StatelessWidget {
                 ),
               );
             } else {
+              if (orders.isEmpty) {
+                return Container(
+                  padding: const EdgeInsets.only(top: 220),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/search_property.png",                        
+                        height: 80,
+                        color: kPrimaryColor,
+                      ),
+                      const Text(
+                        "Chưa có đơn hàng nào",
+                        style: TextStyle(fontWeight: FontWeight.w300),
+                      ),
+                    ],
+                  ),
+                );
+              }
               return Expanded(
-                child: buildOrderList(orders),
+                child: uri.contains("getOrdersOf/acc/") 
+                ? buildAllOrderList(orders)
+                : buildOrderList(orders),
               );
             }
         }
@@ -94,6 +116,27 @@ class OrderPanel extends StatelessWidget {
         itemBuilder: (context, index) {
           final order = orderList[index];
           return OrderCard(
+            order: order,
+            press: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OrderDetailPage(
+                    orderId: order.orderId!,
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      );
+
+  ListView buildAllOrderList(List<Order> orderList) => ListView.builder(
+        shrinkWrap: true,
+        itemCount: orderList.length,
+        itemBuilder: (context, index) {
+          final order = orderList[index];
+          return AllOrderCard(
             order: order,
             press: () {
               Navigator.push(

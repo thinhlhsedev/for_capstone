@@ -102,7 +102,7 @@ class _GenderModifyState extends State<GenderModify> {
             primary: kPrimaryColor,
           ),
           child: const Text(
-            "Save Changes",
+            "Lưu thay đổi",
             style: TextStyle(
               fontWeight: FontWeight.w300,
               fontSize: 16,

@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:for_capstone/pages/cart/widgets/check_out_card.dart';
 
 import '../../../constants.dart';
-import '../../../domains/repository/product.dart';
 import '../../../domains/utils/utils_preference.dart';
 import '../widgets/body.dart';
-import '../widgets/check_out_card.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -15,7 +14,7 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(context),
       body: const Body(),
-      bottomNavigationBar: const CheckoutCard(),
+      bottomNavigationBar: const CheckoutCart(),
     );
   }
 
@@ -42,9 +41,7 @@ class CartPage extends StatelessWidget {
   }
 
   getTotalItem() {
-    var jsonData = jsonDecode(UtilsPreference.getCartInfo() ?? "");
-    var list = jsonData.cast<Map<String, dynamic>>();
-    var num = list.map<Product>((json) => Product.fromJson(json)).toList();
-    return num.length;
+    List list = jsonDecode(UtilsPreference.getCartInfo()!);
+    return list.length;
   }
 }

@@ -33,13 +33,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
       showSelectedLabels: false,
       iconSize: 28,
       onTap: (index) => setState(() {   
-        currentIndex = index;     
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => screen[currentIndex],
-          ),
-        );
+        currentIndex = index;    
+        
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => screen[currentIndex]),
+          );
       }),
       items: const [
         BottomNavigationBarItem(
