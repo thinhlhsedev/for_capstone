@@ -85,7 +85,12 @@ class _CheckoutCartState extends State<CheckoutCart> {
                 ),
                 child: GestureDetector(
                   onTap: buildNotePopUp,
-                  child: SvgPicture.asset("assets/icons/receipt.svg"),
+                  child: SvgPicture.asset(
+                    "assets/icons/receipt.svg",
+                    color: note != ""
+                        ? kPrimaryColor
+                        : Colors.black.withOpacity(0.8),
+                  ),
                 ),
               ),
               const Spacer(),
@@ -98,9 +103,10 @@ class _CheckoutCartState extends State<CheckoutCart> {
                   },
                   style: ElevatedButton.styleFrom(
                     primary: address == "" ? kPrimaryColor : kBackgroundColor,
-                    textStyle: const TextStyle(
-                      fontSize: 18,
-                    ),
+                    textStyle: Theme.of(context).textTheme.button!.copyWith(
+                          color: Colors.black.withOpacity(0.8),
+                          fontSize: 18,
+                        ),
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(30),
@@ -119,9 +125,12 @@ class _CheckoutCartState extends State<CheckoutCart> {
                         child: Text(
                           address == "" ? "Nhập địa chỉ" : address,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color:
-                                  address == "" ? Colors.white : Colors.black),
+                          style: Theme.of(context).textTheme.button!.copyWith(
+                                color: address == ""
+                                    ? Colors.white
+                                    : Colors.black.withOpacity(0.8),
+                                fontSize: 14,
+                              ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -199,11 +208,11 @@ class _CheckoutCartState extends State<CheckoutCart> {
             addOrder("addOrder/2", order);
 
             var cart = Cart(
-                    cartId: UtilsPreference.getCartId(),
-                    accountId: UtilsPreference.getAccountId(),
-                    cartInfo: null,
-                    totalPrice: 0);
-            updateCart("updateCart",cart);
+                cartId: UtilsPreference.getCartId(),
+                accountId: UtilsPreference.getAccountId(),
+                cartInfo: null,
+                totalPrice: 0);
+            updateCart("updateCart", cart);
             UtilsPreference.setCart(cart);
 
             buildSuccessPopup();

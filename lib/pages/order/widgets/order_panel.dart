@@ -58,11 +58,7 @@ class OrderPanel extends StatelessWidget {
           case ConnectionState.waiting:
             return const Padding(
               padding: EdgeInsets.only(top: 220),
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.white,
-                color: kPrimaryColor,
-                strokeWidth: 6,         
-              ),
+              child: kSpinkit,
             );
           default:
             if (snapshot.hasError) {

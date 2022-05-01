@@ -55,14 +55,7 @@ class _BodyState extends State<Body> {
         listProduct = snapshot.data;
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return const Center(
-              heightFactor: 16,
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.white,
-                color: kPrimaryColor,
-                strokeWidth: 6,
-              ),
-            );
+            return kSpinkit;
           default:
             if (snapshot.hasError) {
               return Center(

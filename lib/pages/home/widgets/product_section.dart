@@ -23,12 +23,8 @@ class ProductSection extends StatelessWidget {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return const Center(
-              heightFactor: 6,
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.white,
-                color: kPrimaryColor,
-                strokeWidth: 6,
-              ),
+              heightFactor: 2,
+              child: kSpinkit,
             );
           default:
             if (snapshot.hasError) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:for_capstone/constants.dart';
+import 'package:shimmer/shimmer.dart';
 
-import '../../../constants.dart';
 import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/product.dart';
 import '../../gasstove_detail/views/gasstove_detail_page.dart';
@@ -26,16 +27,22 @@ class _CardLoadProductState extends State<CardLoadProduct> {
     return FutureBuilder<dynamic>(
       future: getProduct("getProduct/" + widget.productId),
       builder: (context, snapshot) {
-        var product = snapshot.data;        
+        var product = snapshot.data;
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return const Center(
-              heightFactor: 3,
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.white,
-                color: kPrimaryColor,
-                strokeWidth: 6,
-              ),              
+            return Center(
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey[400]!,
+                highlightColor: Colors.grey[300]!,
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[400]!,
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                ),
+              ),
             );
           default:
             return CartCard(
@@ -56,7 +63,7 @@ class _CardLoadProductState extends State<CardLoadProduct> {
   }
 
   Future<Product> getProduct(String uri) async {
-    var jsonData = await callApi(uri, "get");    
+    var jsonData = await callApi(uri, "get");
     return Product.fromJson(jsonData);
   }
 }

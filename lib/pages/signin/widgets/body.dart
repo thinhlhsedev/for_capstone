@@ -61,11 +61,7 @@ class _BodyState extends State<Body> {
                   },
                 )
               : const Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.white,
-                    color: kPrimaryColor,
-                    strokeWidth: 6,
-                  ),
+                  child: kSpinkit,
                 ),
           SizedBox(height: SizeConfig.screenHeight * 0.03),
         ],
