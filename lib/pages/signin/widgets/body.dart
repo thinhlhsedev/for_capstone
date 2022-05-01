@@ -74,7 +74,7 @@ class _BodyState extends State<Body> {
     if (account != null) {
       try {
         var accountFetch =
-            await getAccount("getAccountByEmail/" + account.email);        
+            await getAccount("getAccountByEmail/" + account.email);
         if (accountFetch.isActive == true) {
           UtilsPreference.setAccount(accountFetch);
           UtilsPreference.setPhoto(account.photoUrl!);
@@ -82,10 +82,20 @@ class _BodyState extends State<Body> {
           var cartFetch = await getCart(
               "getCartByAccountId/" + accountFetch.accountId.toString());
 
-          if (cartFetch.accountId != null) {            
-            UtilsPreference.setCart(cartFetch);
+          if (cartFetch.accountId != null) {
+            if (cartFetch.cartInfo == null) {
+              UtilsPreference.setCart(Cart(
+                  accountId: accountFetch.accountId,
+                  cartInfo: null,
+                  totalPrice: 0));
+            } else {
+              UtilsPreference.setCart(cartFetch);
+            }
           } else {
-            var cartFetch = Cart(accountId: accountFetch.accountId, cartInfo: null, totalPrice: 0);
+            var cartFetch = Cart(
+                accountId: accountFetch.accountId,
+                cartInfo: null,
+                totalPrice: 0);
             UtilsPreference.setCart(cartFetch);
             addCart("addCart", cartFetch);
           }
@@ -104,13 +114,15 @@ class _BodyState extends State<Body> {
             buildSnackBar("Vui lòng kiểm tra kết nối mạng"),
           );
         }
-        if (ex.toString().contains("400") || 
-        ex.toString().contains("Unexpected end of input (at character 1)")) {
+        if (ex.toString().contains("400") ||
+            ex
+                .toString()
+                .contains("Unexpected end of input (at character 1)")) {
           ScaffoldMessenger.of(context).showSnackBar(
             buildSnackBar("Tài khoản của bạn bị lỗi"),
           );
-          GoogleSignInAPI.logout();          
-        }        
+          GoogleSignInAPI.logout();
+        }
       }
     } else {
       GoogleSignInAPI.logout();
@@ -130,10 +142,9 @@ class _BodyState extends State<Body> {
     return Cart.fromJson(jsonData);
   }
 
-  Future<Cart> addCart(String uri, Cart cart) async {
-    var jsonData =
-        await callApi(uri, "post", bodyParams: cart.toJson3());
-    return Cart.fromJson(jsonData);
+  Future<String> addCart(String uri, Cart cart) async {
+    var jsonData = await callApi(uri, "post", bodyParams: cart.toJson3());
+    return jsonData;
   }
 
   SnackBar buildSnackBar(String text) {

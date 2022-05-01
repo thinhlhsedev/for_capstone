@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:for_capstone/constants.dart';
+import 'package:for_capstone/pages/cart/widgets/card_load_product.dart';
 
 import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/cart.dart';
@@ -25,7 +25,6 @@ class CartPanel extends StatefulWidget {
 }
 
 class _CartPanelState extends State<CartPanel> {
-
   @override
   void initState() {
     super.initState();
@@ -38,52 +37,67 @@ class _CartPanelState extends State<CartPanel> {
         right: kDefaultPadding,
         left: kDefaultPadding,
       ),
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: widget.list.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Dismissible(
-            key: Key(widget.list[index].productId!),
-            direction: DismissDirection.endToStart,
-            onDismissed: (direction) {
-              setState(() async {
-                var product = await getProduct(
-                    "getProduct/" + widget.list[index].productId!);
-                var subtractPrice =
-                    product.price * widget.list[index].amount!.toDouble();
-                var totalPrice = UtilsPreference.getTotalPrice()!;
-                var remain = totalPrice - subtractPrice;
-
-                UtilsPreference.setTotalPrice(remain);
-                UtilsPreference.setCartInfo(widget.list);
-
-                Cart cart = setCart(widget.list, remain);
-
-                updateCart("updateCart", cart);
-
-                widget.list.removeAt(index);
-              });
-            },
-            background: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFE6E6),
-                borderRadius: BorderRadius.circular(15),
+      child: widget.list.isNotEmpty
+          ? ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.list.length,
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Dismissible(
+                  key: Key(widget.list[index].productId!),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) async {
+                    widget.list.removeAt(index);
+                    if (widget.list.isEmpty) {
+                      UtilsPreference.setCartInfo(<CartProduct>[]);
+                      Cart cart = setCart(<CartProduct>[]);
+                      updateCart("updateCart", cart);
+                    } else {
+                      UtilsPreference.setCartInfo(widget.list);
+                      Cart cart = setCart(widget.list);
+                      updateCart("updateCart", cart);
+                    }
+                  },
+                  background: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFE6E6),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        SvgPicture.asset("assets/icons/trash.svg"),
+                      ],
+                    ),
+                  ),
+                  child: CardLoadProduct(
+                      productId: widget.list[index].productId!,
+                      number: widget.list[index].amount!),
+                ),
               ),
-              child: Row(
-                children: [
-                  const Spacer(),
-                  SvgPicture.asset("assets/icons/trash.svg"),
-                ],
+            )
+          : Center(
+              child: Container(
+                padding: const EdgeInsets.only(
+                  top: 220,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/images/gas_stove.png",
+                      height: 80,
+                      color: kPrimaryColor,
+                    ),
+                    const Text(
+                      "Chưa có sản phẩm nào",
+                      style: TextStyle(fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                ),
               ),
             ),
-            child: loadProductData(
-                "getProduct/" + (widget.list[index].productId ?? ""),
-                (widget.list[index].amount ?? 0)),
-          ),
-        ),
-      ),
     );
   }
 
@@ -91,7 +105,7 @@ class _CartPanelState extends State<CartPanel> {
     return FutureBuilder<dynamic>(
       future: getProduct(uri),
       builder: (context, snapshot) {
-        var product = snapshot.data;
+        final product = snapshot.data;
         return CartCard(
           product: product,
           amount: number,
@@ -120,10 +134,9 @@ class _CartPanelState extends State<CartPanel> {
     return jsonData;
   }
 
-  Cart setCart(List<CartProduct> cartInfo, double totalPrice) {
+  Cart setCart(List<CartProduct> cartInfo) {
     var cart = Cart.fromJson3(jsonDecode(UtilsPreference.getFullCart()!));
     cart.cartInfo = cartInfo;
-    cart.totalPrice = totalPrice;
     UtilsPreference.setFullCart(cart);
     return cart;
   }

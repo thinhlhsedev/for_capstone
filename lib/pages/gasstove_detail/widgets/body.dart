@@ -55,9 +55,7 @@ class _BodyState extends State<Body> {
                     children: [
                       const SizedBox(height: kDefaultPadding / 2),
                       Description(product: widget.product),
-                      const Spacer(),
-                      Price(product: widget.product),
-                      const SizedBox(height: kDefaultPadding),
+                      const Spacer(),                      
                       buildCartCounter(context),
                       const SizedBox(height: kDefaultPadding),
                       AddToCart(

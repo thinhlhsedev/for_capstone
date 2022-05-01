@@ -21,26 +21,26 @@ class OrderPanel extends StatelessWidget {
     switch (orderStatus) {
       case "Tất cả đơn":
         return loadOrderData(
-            "getOrdersOf/acc/" + (UtilsPreference.getAccountId() ?? ""));
+            "getOrdersOf/acc/" + UtilsPreference.getAccountId().toString());
       case "Chờ xác nhận":
         return loadOrderData("getOrderOf/" +
-            (UtilsPreference.getAccountId() ?? "") +
+            UtilsPreference.getAccountId().toString() +
             "/Pending");
       case "Đang xử lý":
         return loadOrderData("getOrderOf/" +
-            (UtilsPreference.getAccountId() ?? "") +
+            UtilsPreference.getAccountId().toString() +
             "/Processing");
       case "Đang vận chuyển":
         return loadOrderData("getOrderOf/" +
-            (UtilsPreference.getAccountId() ?? "") +
+            UtilsPreference.getAccountId().toString() +
             "/Delivering");
       case "Đã hoàn tất":
         return loadOrderData("getOrderOf/" +
-            (UtilsPreference.getAccountId() ?? "") +
+            UtilsPreference.getAccountId().toString() +
             "/Completed");
       case "Đã hủy":
         return loadOrderData("getOrderOf/" +
-            (UtilsPreference.getAccountId() ?? "") +
+            UtilsPreference.getAccountId().toString() +
             "/Canceled");
       default:
         return const Center(
@@ -61,7 +61,7 @@ class OrderPanel extends StatelessWidget {
               child: CircularProgressIndicator(
                 backgroundColor: Colors.white,
                 color: kPrimaryColor,
-                strokeWidth: 6,
+                strokeWidth: 6,         
               ),
             );
           default:

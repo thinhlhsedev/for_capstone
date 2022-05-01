@@ -37,6 +37,9 @@ class CartPage extends StatelessWidget {
         ],
       ),
       centerTitle: true,
+      actions: [
+        
+      ],
     );
   }
 

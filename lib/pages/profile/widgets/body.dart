@@ -23,7 +23,8 @@ class _BodyState extends State<Body> {
   late String tmpDate;
   bool isButtonActive = false;
 
-  late String fullName, dob, phone, email, gender;
+  late String fullName, dob, phone, email;
+  late String? gender;
 
   @override
   void initState() {
@@ -43,7 +44,7 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       color: kPrimaryColor,
-      onRefresh: loadProfile,
+      onRefresh: refreshProfile,
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
@@ -145,7 +146,7 @@ class _BodyState extends State<Body> {
     );
   }
 
-  Future<void> loadProfile() async {
+  Future<void> refreshProfile() async {
     await Future.delayed(const Duration(seconds: 1),);    
       setState(() {
         fullName = UtilsPreference.getDisplayname()!;

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../domains/utils/utils_preference.dart';
 import '../../cart/views/cart_page.dart';
@@ -20,19 +19,17 @@ class _CartWithNumberState extends State<CartWithNumber> {
     super.initState();
     number = getTotalItem();
   }
-  
-  @override
-  void didUpdateWidget(covariant CartWithNumber oldWidget) {    
-    super.didUpdateWidget(oldWidget);
-    number = getTotalItem();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        IconButton(                    
-          icon: SvgPicture.asset("assets/icons/shopping_cart.svg"),
+        IconButton(
+          icon: const Icon(
+            Icons.shopping_cart_outlined,
+            size: 33,
+            color: Colors.black,
+          ),
           onPressed: () {
             Navigator.push(
               context,
@@ -69,4 +66,6 @@ class _CartWithNumberState extends State<CartWithNumber> {
     List list = jsonDecode(UtilsPreference.getCartInfo()!);
     return list.length;
   }
+
+  
 }

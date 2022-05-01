@@ -20,11 +20,11 @@ OrderDetail _$OrderDetailFromJson(Map<String, dynamic> json) => OrderDetail(
 
 Map<String, dynamic> _$OrderDetailToJson(OrderDetail instance) =>
     <String, dynamic>{
-      'orderDetailId': instance.orderDetailId,
+      //'orderDetailId': instance.orderDetailId,
       'orderId': instance.orderId,
       'productId': instance.productId,
       'amount': instance.amount,
       'price': instance.price,
       'note': instance.note,
-      'product': instance.product,
+      //'product': instance.product,
     };

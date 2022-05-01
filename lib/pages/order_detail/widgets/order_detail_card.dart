@@ -97,7 +97,7 @@ class OrderDetailCard extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        "Đơn giá: " + getPrice(orderDetail.price!) + ".000 vnd",
+                        getPrice(orderDetail.price!) + ".000 vnd",
                         style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
                       ),
                     ),

@@ -55,15 +55,20 @@ class AllOrderCard extends StatelessWidget {
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    child:
-                        buildText(context, "Địa chỉ: ", order.customerAddress!),
+                    child: buildText(
+                        context, "Địa chỉ: ", order.customerAddress.toString()),
                   ),
                   const SizedBox(height: 10),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    child: buildText(context, "Ngày giao hàng dự kiến: ",
-                        getDate(order.expiryDate!.substring(0, 10))),
+                    child: buildText(
+                      context,
+                      "Ngày giao hàng dự kiến: ",
+                      order.expiryDate != null
+                          ? getDate(order.expiryDate!.substring(0, 10))
+                          : "Chưa cấp",
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Padding(
@@ -85,7 +90,8 @@ class AllOrderCard extends StatelessWidget {
                   const Spacer(),
                   Row(
                     children: [
-                      buildPricePadding(getPrice(order.totalPrice!) + ".000 vnd"),
+                      buildPricePadding(
+                          getPrice(order.totalPrice!) + ".000 vnd"),
                       const Spacer(),
                       buildDetailPadding("Chi tiết", context),
                     ],
@@ -183,21 +189,20 @@ class AllOrderCard extends StatelessWidget {
     }
   }
 
-  String getPrice(double price){   
-    var tmp = ""; 
-    if (price >= 1000)
-    {
-      tmp = (price/1000).toString();
-      if (tmp.length == 3)
-      {
-        tmp = tmp + "00";
-      }
-      if (tmp.length == 4)
-      {
-        tmp = tmp + "0";
-      }
-    } else {
-      tmp = price.floor().toString();
+  String getPrice(double price) {
+    var tmp = "";
+
+    if (9999 < price && price <= 999999) {
+      tmp = (price / 100000).toString();
+    } else if (999999 < price && price <= 99999999) {
+      tmp = (price / 10000000).toString();
+    }
+
+    if (tmp.length == 3) {
+      tmp = tmp + "00";
+    }
+    if (tmp.length == 4) {
+      tmp = tmp + "0";
     }
     return tmp;
   }

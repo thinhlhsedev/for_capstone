@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:for_capstone/constants.dart';
 import 'package:for_capstone/size_config.dart';
 
+import '../../../domains/utils/utils_preference.dart';
 import '../widgets/body.dart';
 import '../widgets/cart_with_number.dart';
 
@@ -20,16 +23,16 @@ class HomePage extends StatelessWidget {
     return AppBar(
       backgroundColor: kPrimaryColor,
       elevation: 0,
-      leading: Container(      
-        margin: EdgeInsets.only(left: SizeConfig.screenWidth * 0.03),  
+      leading: Container(
+        margin: EdgeInsets.only(left: SizeConfig.screenWidth * 0.03),
         child: Image.asset(
           "assets/images/logo.png",
           color: Colors.white,
-        ),        
+        ),
       ),
       actions: const [
         CartWithNumber(),
-        SizedBox(width: kDefaultPadding / 2)
+        SizedBox(width: kDefaultPadding / 2),
       ],
     );
   }

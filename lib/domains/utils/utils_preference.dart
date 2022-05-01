@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../repository/account.dart';
 import '../repository/cartproduct.dart';
+import '../repository/product.dart';
 
 class UtilsPreference {
   static late SharedPreferences _preferences;
@@ -18,20 +19,15 @@ class UtilsPreference {
   static const _keyAddress = "address";
   static const _keyAccount = "account";
 
-  static const _keyCartId = "cartId";
-  static const _keyTotalPrice = "0";
-  static const _keyCartInfo = "cartInfo";
-  static const _keyCart = "cart";
-
   //Initiation
   static Future init() async =>
       _preferences = await SharedPreferences.getInstance();
 
   //Display name
-  static Future setAccountId(String accountId) async =>
-      await _preferences.setString(_keyAccountId, accountId);
+  static Future setAccountId(int accountId) async =>
+      await _preferences.setInt(_keyAccountId, accountId);
 
-  static String? getAccountId() => _preferences.getString(_keyAccountId);
+  static int? getAccountId() => _preferences.getInt(_keyAccountId);
 
   //Display name
   static Future setDisplayName(String displayName) async =>
@@ -83,7 +79,7 @@ class UtilsPreference {
 
   //Set full
   static Future setAccount(Account account) async {
-    await setAccountId(account.accountId.toString());
+    await setAccountId(account.accountId!);
     await setDisplayName(account.name ?? "user" + account.accountId.toString());
     await setPhone(account.phone ?? "");
     await setDOB(account.dateOfBirth ?? "");
@@ -93,12 +89,16 @@ class UtilsPreference {
   }
 
   //===========================================================================//
+  static const _keyCartId = "cartId";
+  static const _keyTotalPrice = "0";
+  static const _keyCartInfo = "cartInfo";
+  static const _keyCart = "cart";
 
   //Cart Id
   static Future setCartId(int cartId) async =>
       await _preferences.setInt(_keyCartId, cartId);
 
-  static String? getCartId() => _preferences.getString(_keyCartId);
+  static int? getCartId() => _preferences.getInt(_keyCartId);
 
   //Total Price
   static Future setTotalPrice(double totalPrice) async =>
@@ -124,7 +124,9 @@ class UtilsPreference {
   static Future setCart(Cart cart) async {
     await setCartId(cart.cartId ?? 0);
     await setTotalPrice(cart.totalPrice ?? 0);
-    await setCartInfo(cart.cartInfo!);
+    await setCartInfo(cart.cartInfo ?? <CartProduct>[]);
     await setFullCart(cart);
   }
+
+  //===========================================================================//
 }

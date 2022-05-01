@@ -20,11 +20,15 @@ class Cart {
     accountId = json['accountId'];
     totalPrice = json['totalPrice'];
     cartInfo = <CartProduct>[];
-    var list = jsonDecode(json['cartInfo'].replaceAll("\\", ""));
-    if (list.length != 0) {
-      list.forEach((v) {
-        cartInfo!.add(CartProduct.fromJson(v));
-      });
+    if (json['cartInfo'] != null) {
+      var list = jsonDecode(json['cartInfo'].replaceAll("\\", ""));
+      if (list.length != 0) {
+        list.forEach((v) {
+          cartInfo!.add(CartProduct.fromJson(v));
+        });
+      }
+    } else {
+      cartInfo = <CartProduct>[];
     }
   }
 
@@ -67,8 +71,7 @@ class Cart {
     data['AccountId'] = accountId.toString();
     data['TotalPrice'] = totalPrice.toString();
     if (cartInfo != null) {
-      data['CartInfo'] =
-          cartInfo!.map((v) => v.toJson()).toList().toString();
+      data['CartInfo'] = cartInfo!.map((v) => v.toJson()).toList().toString();
     }
     return data;
   }
@@ -78,7 +81,7 @@ class Cart {
     data['CartId'] = cartId;
     data['AccountId'] = accountId;
     data['TotalPrice'] = totalPrice;
-    if (cartInfo != null) {      
+    if (cartInfo != null) {
       var str = cartInfo!.map((v) => v.toJson()).toList();
       data['CartInfo'] = jsonEncode(str);
     }

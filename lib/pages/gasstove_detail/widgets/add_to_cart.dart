@@ -21,8 +21,7 @@ class AddToCart extends StatelessWidget {
   final int number;
 
   @override
-  Widget build(BuildContext context) {
-    double totalPrice = 0;
+  Widget build(BuildContext context) {    
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
@@ -46,11 +45,10 @@ class AddToCart extends StatelessWidget {
                           productId: product.productId, amount: number);
                       List<CartProduct> cartInfo = [];
                       var list = jsonDecode(UtilsPreference.getCartInfo()!);
-                      totalPrice = UtilsPreference.getTotalPrice()!;
 
-                      checkCart(list, cartProduct, cartInfo, totalPrice);
+                      checkCart(list, cartProduct, cartInfo);
 
-                      Cart cart = setCart(cartInfo, totalPrice);
+                      Cart cart = setCart(cartInfo);
 
                       updateCart("updateCart", cart);
 
@@ -83,16 +81,14 @@ class AddToCart extends StatelessWidget {
     );
   }
 
-  Cart setCart(List<CartProduct> cartInfo, double totalPrice) {
+  Cart setCart(List<CartProduct> cartInfo) {
     var cart = Cart.fromJson3(jsonDecode(UtilsPreference.getFullCart()!));
     cart.cartInfo = cartInfo;
-    cart.totalPrice = totalPrice;
     UtilsPreference.setFullCart(cart);
     return cart;
   }
 
-  void checkCart(list, CartProduct cartProduct, List<CartProduct> cartInfo,
-      double totalPrice) async {
+  void checkCart(list, CartProduct cartProduct, List<CartProduct> cartInfo,) async {
     list.forEach((v) async {
       var productTmp = CartProduct.fromJson(v);
       cartInfo.add(productTmp);
@@ -103,25 +99,16 @@ class AddToCart extends StatelessWidget {
 
     for (int i = 0; i < len; i++) {
       if (cartInfo[i].productId == cartProduct.productId) {
-        cartInfo[i].amount = cartInfo[i].amount! + cartProduct.amount!;
-        totalPrice = await getPrice(cartProduct, totalPrice);
+        cartInfo[i].amount = cartInfo[i].amount! + cartProduct.amount!;        
         checkExist = true;
         break;
       }
     }
     if (!checkExist) {
-      cartInfo.add(cartProduct);
-      totalPrice = await getPrice(cartProduct, totalPrice);
+      cartInfo.add(cartProduct);      
     }
 
-    UtilsPreference.setTotalPrice(totalPrice);
     UtilsPreference.setCartInfo(cartInfo);
-  }
-
-  Future<double> getPrice(CartProduct cartProduct, double totalPrice) async {
-    var tmp = await getProduct("getProduct/" + cartProduct.productId!);
-    totalPrice = totalPrice + tmp.price * cartProduct.amount!;
-    return totalPrice;
   }
 
   SnackBar buildSnackBar(String text) {

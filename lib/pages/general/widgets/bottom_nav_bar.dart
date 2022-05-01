@@ -35,8 +35,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         height: 70,
         onDestinationSelected: (newIndex) {
           setState(() {            
-            currentIndex = newIndex;
-            print("cur new:" + currentIndex.toString());            
+            currentIndex = newIndex;                    
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => screen[currentIndex]),
             );

@@ -1,9 +1,16 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:for_capstone/domains/repository/cart.dart';
 
 import '../../../constants.dart';
+import '../../../domains/api/api_method.dart';
+import '../../../domains/repository/cartproduct.dart';
+import '../../../domains/repository/order.dart';
+import '../../../domains/repository/order_detail.dart';
 import '../../../domains/utils/utils_preference.dart';
 import '../../../size_config.dart';
+import '../../general/views/general_page.dart';
 
 class CheckoutCart extends StatefulWidget {
   const CheckoutCart({Key? key}) : super(key: key);
@@ -17,16 +24,20 @@ class _CheckoutCartState extends State<CheckoutCart> {
       text: UtilsPreference.getAddress() == "address"
           ? ""
           : UtilsPreference.getAddress());
-  String address = UtilsPreference.getAddress()!, tmpAddress = "";
+  String address = UtilsPreference.getAddress() ?? "";
   bool isButtonActive = false;
   double width = kDefaultPadding, height = kDefaultPadding;
 
   @override
   void initState() {
     super.initState();
+    if (address == "" || getTotalItem() == 0) {
+      isButtonActive = false;
+    } else {
+      isButtonActive = true;
+    }
     textFieldController.addListener(() {
       var isButtonActive = textFieldController.text.isNotEmpty;
-      tmpAddress = address;
       this.isButtonActive = isButtonActive;
     });
   }
@@ -63,9 +74,9 @@ class _CheckoutCartState extends State<CheckoutCart> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
-                height: getProportionateScreenWidth(40),
-                width: getProportionateScreenWidth(40),
+                //padding: const EdgeInsets.all(10),
+                height: getProportionateScreenWidth(30),
+                width: getProportionateScreenWidth(30),
                 decoration: BoxDecoration(
                   //color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(10),
@@ -106,6 +117,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
                           style: TextStyle(
                               color:
                                   address == "" ? Colors.white : Colors.black),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
@@ -115,47 +127,119 @@ class _CheckoutCartState extends State<CheckoutCart> {
             ],
           ),
           SizedBox(height: getProportionateScreenHeight(20)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text.rich(
-                TextSpan(
-                  text: "Tổng tiền:\n",
-                  children: [
-                    TextSpan(
-                      text: getTotalPrice().toString(),
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
-                    ),
-                  ],
+          SizedBox(
+            width: SizeConfig.screenWidth,
+            child: ElevatedButton(
+              onPressed: isButtonActive == true
+                  ? () {
+                      buildConfirmDialog();
+                    }
+                  : null,
+              style: ElevatedButton.styleFrom(
+                primary: kPrimaryColor,
+                textStyle: const TextStyle(fontSize: 18),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20),
+                  ),
                 ),
               ),
-              SizedBox(
-                width: getProportionateScreenWidth(190),
-                child: ElevatedButton(
-                  onPressed: isButtonActive == true
-                      ? () {
-                          setState(() {
-                            address = textFieldController.text;
-                          });
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    primary: kPrimaryColor,
-                    textStyle: const TextStyle(fontSize: 18),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(20),
-                        topLeft: Radius.circular(20),
-                      ),
-                    ),
-                  ),
-                  child: const Text(
-                    "Xác nhận đơn",
-                  ),
-                ),
+              child: const Text(
+                "Xác nhận đơn",
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<dynamic> buildConfirmDialog() {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          "Xác nhận đơn",
+          style: TextStyle(color: kPrimaryColor),
+        ),
+        content: Text(
+          "Bạn đồng ý với thông tin đơn hàng ?",
+          style: Theme.of(context).textTheme.button!.copyWith(
+                color: Colors.black.withOpacity(0.7),
+                fontSize: 16,
+              ),
+        ),
+        actions: [
+          buildTextButton(context, () {
+            var list = buildListCartProduct();
+            var listOrderDetail = <OrderDetail>[];
+            for (var cartProduct in list) {
+              OrderDetail orderDetail = OrderDetail(
+                productId: cartProduct.productId,
+                amount: cartProduct.amount,
+              );
+              listOrderDetail.add(orderDetail);
+            }
+            Order order = Order(
+              accountId: UtilsPreference.getAccountId(),
+              customerAddress: address,
+              customerName: UtilsPreference.getDisplayname(),
+              orderDetails: listOrderDetail,
+              status: "Pending",
+              isShorTerm: true,
+            );
+
+            addOrder("addOrder/2", order);
+
+            updateCart(
+                "updateCart",
+                Cart(
+                    cartId: UtilsPreference.getCartId(),
+                    accountId: UtilsPreference.getAccountId()));
+            UtilsPreference.setCart(Cart(cartInfo: null, totalPrice: 0));
+
+            buildSuccessPopup();
+          }, "Tiếp tục"),
+          buildTextButton(context, () {
+            Navigator.of(context).pop();
+          }, "Không"),
+        ],
+      ),
+    );
+  }
+
+  Future<dynamic> buildSuccessPopup() {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        content: SizedBox(
+          height: 80,
+          child: Column(
+            children: [
+              Image.asset(
+                "assets/images/check.png",
+                color: kPrimaryColor,
+                height: 50,
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Đơn hàng đã được yêu cầu",
               ),
             ],
           ),
+        ),
+        actions: [
+          buildTextButton(
+            context,
+            () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const GeneralPage()),
+              );
+            },
+            "Quay về màn hính chính",
+          )
         ],
       ),
     );
@@ -171,6 +255,8 @@ class _CheckoutCartState extends State<CheckoutCart> {
         ),
         content: TextField(
           controller: textFieldController,
+          maxLines: 5,
+          minLines: 1,
           onChanged: (value) {},
           style: const TextStyle(color: Colors.black),
           decoration: const InputDecoration(
@@ -183,25 +269,36 @@ class _CheckoutCartState extends State<CheckoutCart> {
             hintText: 'Nhập địa chỉ',
             hintStyle: TextStyle(color: kPrimaryColor),
           ),
-          textCapitalization: TextCapitalization.words,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
         ),
         actions: [
-          TextButton(
-            onPressed: () {
+          buildTextButton(
+            context,
+            () {
               setState(() {
                 address = textFieldController.text;
                 UtilsPreference.setAddress(address);
                 Navigator.of(context).pop();
               });
             },
-            child: const Text(
-              "Lưu",
-              style: TextStyle(color: kPrimaryColor),
-            ),
+            "Lưu thay đổi",
           )
         ],
+      ),
+    );
+  }
+
+  TextButton buildTextButton(
+      BuildContext context, VoidCallback press, String text) {
+    return TextButton(
+      onPressed: press,
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.button!.copyWith(
+              color: kPrimaryColor,
+              fontSize: 16,
+            ),
       ),
     );
   }
@@ -209,5 +306,29 @@ class _CheckoutCartState extends State<CheckoutCart> {
   getTotalPrice() {
     double totalPrice = UtilsPreference.getTotalPrice()!;
     return totalPrice;
+  }
+
+  Future<dynamic> updateCart(String uri, Cart cart) async {
+    var jsonData = await callApi(uri, "put",
+        bodyParams: jsonEncode(cart.toJson3()),
+        header: {'Content-Type': 'application/json; charset=UTF-8'});
+    return jsonData;
+  }
+
+  Future<String> addOrder(String uri, Order order) async {
+    var jsonData = await callApi(uri, "post",
+        bodyParams: jsonEncode(order.toJson2()),
+        header: {'Content-Type': 'application/json; charset=UTF-8'});
+    return jsonData;
+  }
+
+  List<CartProduct> buildListCartProduct() {
+    var list = jsonDecode(UtilsPreference.getCartInfo()!);
+    return list.map<CartProduct>((json) => CartProduct.fromJson(json)).toList();
+  }
+
+  getTotalItem() {
+    List list = jsonDecode(UtilsPreference.getCartInfo()!);
+    return list.length;
   }
 }
