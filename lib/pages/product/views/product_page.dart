@@ -25,6 +25,7 @@ class ProductPage extends StatelessWidget {
         "Bếp Gas",
       ),
       centerTitle: true,
+      //leading: ,
       actions: const [
         CartWithNumber(),
         SizedBox(width: kDefaultPadding / 2),

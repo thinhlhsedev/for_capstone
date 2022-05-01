@@ -40,7 +40,13 @@ class ProductSection extends StatelessWidget {
                 ),
               );
             } else {
-              return buildProductList(products);
+              var list = <Product>[];
+              for (Product product in products) {
+                if (!product.productId.contains('_')) {
+                  list.add(product);
+                }
+              }              
+              return buildProductList(list);
             }
         }
       },

@@ -192,17 +192,17 @@ class AllOrderCard extends StatelessWidget {
   String getPrice(double price) {
     var tmp = "";
 
-    if (9999 < price && price <= 999999) {
-      tmp = (price / 100000).toString();
+    if (99999 < price && price <= 999999) {
+      tmp = (price / 10000).toString();
     } else if (999999 < price && price <= 99999999) {
-      tmp = (price / 10000000).toString();
+      tmp = (price / 1000000).toString();
     }
 
     if (tmp.length == 3) {
-      tmp = tmp + "00";
+      tmp = tmp + "000";
     }
     if (tmp.length == 4) {
-      tmp = tmp + "0";
+      tmp = tmp + "00";
     }
     return tmp;
   }

@@ -45,7 +45,7 @@ class Order {
     data['customerName'] = customerName;
     data['customerAddress'] = customerAddress;
     if (orderDetails != null) {
-      data['orderDetails'] = orderDetails!.map((v) => v.toJson()).toList();
+      data['orderDetail'] = orderDetails!.map((v) => v.toJson()).toList();
     }
     return data;
   }

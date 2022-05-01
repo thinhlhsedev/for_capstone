@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:for_capstone/constants.dart';
+import 'package:for_capstone/domains/api/api_method_mutipart.dart';
 import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/pages/signin/widgets/background.dart';
 import 'package:for_capstone/size_config.dart';
@@ -50,6 +51,10 @@ class _BodyState extends State<Body> {
                       isLoading = true;
                     });
                     await signIn(context);
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => const GeneralPage()),
+                    );
                     setState(() {
                       isLoading = false;
                     });
@@ -99,10 +104,6 @@ class _BodyState extends State<Body> {
             UtilsPreference.setCart(cartFetch);
             addCart("addCart", cartFetch);
           }
-
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const GeneralPage()),
-          );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             buildSnackBar("Tài khoản của bạn bị khóa"),
@@ -140,6 +141,12 @@ class _BodyState extends State<Body> {
   Future<Cart> getCart(String uri) async {
     var jsonData = await callApi(uri, "get");
     return Cart.fromJson(jsonData);
+  }
+
+  Future<String> addAccount(String uri, Account account) async {
+    var jsonData =
+        await callApiMultipart(uri, "post", bodyParams: account.toJson2());
+    return jsonData;
   }
 
   Future<String> addCart(String uri, Cart cart) async {

@@ -169,12 +169,12 @@ class OrderCard extends StatelessWidget {
   String getPrice(double price) {
     var tmp = "";
     if (price >= 1000) {
-      tmp = (price / 1000).toString();
+      tmp = (price / 10000).toString();
       if (tmp.length == 3) {
-        tmp = tmp + "00";
+        tmp = tmp + "000";
       }
       if (tmp.length == 4) {
-        tmp = tmp + "0";
+        tmp = tmp + "00";
       }
     } else {
       tmp = price.floor().toString();

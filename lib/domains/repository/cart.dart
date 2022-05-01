@@ -45,7 +45,9 @@ class Cart {
     totalPrice = json['totalPrice'];
     cartInfo = <CartProduct>[];
     var list = json['cartInfo'];
-    if (list.length != 0) {
+    if (list == null) {
+      list = <CartProduct>[];
+    } else if (list.length != 0) {
       list.forEach((v) {
         cartInfo!.add(CartProduct.fromJson(v));
       });

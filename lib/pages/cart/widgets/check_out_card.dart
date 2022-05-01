@@ -24,7 +24,9 @@ class _CheckoutCartState extends State<CheckoutCart> {
       text: UtilsPreference.getAddress() == "address"
           ? ""
           : UtilsPreference.getAddress());
+  TextEditingController textFieldController2 = TextEditingController();
   String address = UtilsPreference.getAddress() ?? "";
+  String note = "";
   bool isButtonActive = false;
   double width = kDefaultPadding, height = kDefaultPadding;
 
@@ -81,7 +83,10 @@ class _CheckoutCartState extends State<CheckoutCart> {
                   //color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: SvgPicture.asset("assets/icons/receipt.svg"),
+                child: GestureDetector(
+                  onTap: buildNotePopUp,
+                  child: SvgPicture.asset("assets/icons/receipt.svg"),
+                ),
               ),
               const Spacer(),
               SizedBox(
@@ -188,16 +193,18 @@ class _CheckoutCartState extends State<CheckoutCart> {
               orderDetails: listOrderDetail,
               status: "Pending",
               isShorTerm: true,
+              note: note,
             );
 
             addOrder("addOrder/2", order);
 
-            updateCart(
-                "updateCart",
-                Cart(
+            var cart = Cart(
                     cartId: UtilsPreference.getCartId(),
-                    accountId: UtilsPreference.getAccountId()));
-            UtilsPreference.setCart(Cart(cartInfo: null, totalPrice: 0));
+                    accountId: UtilsPreference.getAccountId(),
+                    cartInfo: null,
+                    totalPrice: 0);
+            updateCart("updateCart",cart);
+            UtilsPreference.setCart(cart);
 
             buildSuccessPopup();
           }, "Tiếp tục"),
@@ -246,28 +253,59 @@ class _CheckoutCartState extends State<CheckoutCart> {
   }
 
   Future<dynamic> buildAddressPopUp() {
+    return buildDialog(
+      "Địa chỉ của bạn",
+      textFieldController,
+      "Nhập địa chỉ",
+      () {
+        setState(() {
+          address = textFieldController.text;
+          UtilsPreference.setAddress(address);
+          Navigator.of(context).pop();
+        });
+      },
+    );
+  }
+
+  Future<dynamic> buildNotePopUp() {
+    return buildDialog(
+      "Ghi chú",
+      textFieldController2,
+      "Nhập ghi chú",
+      () {
+        setState(() {
+          note = textFieldController2.text;
+          //UtilsPreference.set(address);
+          Navigator.of(context).pop();
+        });
+      },
+    );
+  }
+
+  Future<dynamic> buildDialog(String title, TextEditingController controller,
+      String hintext, VoidCallback press) {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text(
-          "Địa chỉ của bạn",
-          style: TextStyle(color: kPrimaryColor),
+        title: Text(
+          title,
+          style: const TextStyle(color: kPrimaryColor),
         ),
         content: TextField(
-          controller: textFieldController,
+          controller: controller,
           maxLines: 5,
           minLines: 1,
           onChanged: (value) {},
           style: const TextStyle(color: Colors.black),
-          decoration: const InputDecoration(
-            focusedBorder: OutlineInputBorder(),
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(
+          decoration: InputDecoration(
+            focusedBorder: const OutlineInputBorder(),
+            border: const OutlineInputBorder(),
+            prefixIcon: const Icon(
               Icons.location_on_outlined,
               color: Colors.black,
             ),
-            hintText: 'Nhập địa chỉ',
-            hintStyle: TextStyle(color: kPrimaryColor),
+            hintText: hintext,
+            hintStyle: const TextStyle(color: kPrimaryColor),
           ),
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
@@ -275,13 +313,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
         actions: [
           buildTextButton(
             context,
-            () {
-              setState(() {
-                address = textFieldController.text;
-                UtilsPreference.setAddress(address);
-                Navigator.of(context).pop();
-              });
-            },
+            press,
             "Lưu thay đổi",
           )
         ],

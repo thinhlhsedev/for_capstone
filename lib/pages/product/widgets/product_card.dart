@@ -129,7 +129,7 @@ class _ProductCardState extends State<ProductCard> {
                                   productId: widget.product.productId,
                                   amount: number);
                               List<CartProduct> cartInfo = [];
-                              var list = <CartProduct>[];
+                              var list = [];
                               if (UtilsPreference.getCartInfo() != null)
                               {
                                 list = jsonDecode(UtilsPreference.getCartInfo()!);

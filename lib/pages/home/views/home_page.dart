@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:for_capstone/constants.dart';
 import 'package:for_capstone/size_config.dart';
 
-import '../../../domains/utils/utils_preference.dart';
 import '../widgets/body.dart';
 import '../widgets/cart_with_number.dart';
 

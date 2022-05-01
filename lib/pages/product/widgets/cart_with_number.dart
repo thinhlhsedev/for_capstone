@@ -28,7 +28,7 @@ class _CartWithNumberState extends State<CartWithNumber> {
           icon: const Icon(
             Icons.shopping_cart_outlined,
             size: 33,
-            color: Colors.black,
+            color: Colors.white,
           ),
           onPressed: () {
             Navigator.push(

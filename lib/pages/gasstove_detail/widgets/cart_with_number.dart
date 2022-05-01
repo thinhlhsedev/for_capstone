@@ -32,7 +32,11 @@ class _CartWithNumberState extends State<CartWithNumber> {
     return Stack(
       children: [
         IconButton(                    
-          icon: SvgPicture.asset("assets/icons/shopping_cart.svg"),
+          icon: const Icon(
+            Icons.shopping_cart_outlined,
+            size: 33,
+            color: Colors.white,
+          ),
           onPressed: () {
             Navigator.push(
               context,

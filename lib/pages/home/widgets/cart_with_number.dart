@@ -28,7 +28,7 @@ class _CartWithNumberState extends State<CartWithNumber> {
           icon: const Icon(
             Icons.shopping_cart_outlined,
             size: 33,
-            color: Colors.black,
+            color: Colors.white,
           ),
           onPressed: () {
             Navigator.push(
@@ -39,25 +39,25 @@ class _CartWithNumberState extends State<CartWithNumber> {
             );
           },
         ),
-        Positioned(
-          right: 2,
-          top: 5,
-          child: SizedBox(
-            height: 18,
-            width: 18,
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16), color: Colors.white),
-              child: Center(
-                child: Text(
-                  number.toString(),
-                  style: const TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w500),
-                ),
-              ),
-            ),
-          ),
-        )
+        // Positioned(
+        //   right: 2,
+        //   top: 5,
+        //   child: SizedBox(
+        //     height: 18,
+        //     width: 18,
+        //     child: Container(
+        //       decoration: BoxDecoration(
+        //           borderRadius: BorderRadius.circular(16), color: Colors.white),
+        //       child: Center(
+        //         child: Text(
+        //           number.toString(),
+        //           style: const TextStyle(
+        //               color: Colors.black, fontWeight: FontWeight.w500),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
