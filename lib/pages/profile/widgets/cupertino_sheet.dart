@@ -1,12 +1,18 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
+import '../../../domains/api/api_method_mutipart.dart';
+import '../../../domains/repository/account.dart';
 import '../../../domains/utils/utils_preference.dart';
 import '../../../size_config.dart';
 
 class CupertinoSheet extends StatefulWidget {
-  const CupertinoSheet({Key? key}) : super(key: key);
+  const CupertinoSheet({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CupertinoSheet> createState() => _CupertinoSheetState();
@@ -21,8 +27,12 @@ class _CupertinoSheetState extends State<CupertinoSheet> {
   @override
   void initState() {
     super.initState();
-    tmpDate = UtilsPreference.getDOB()!.substring(0, 10);
-    selectedDate = DateTime.parse(tmpDate);
+    if (UtilsPreference.getDOB()! != "") {
+      tmpDate = UtilsPreference.getDOB()!.substring(0, 10);
+      selectedDate = DateTime.parse(tmpDate);
+    } else {
+      selectedDate = DateTime.now();
+    }
     firstDate = selectedDate;
     isButtonActive = false;
   }
@@ -55,9 +65,18 @@ class _CupertinoSheetState extends State<CupertinoSheet> {
       ],
       cancelButton: ElevatedButton(
         onPressed: isButtonActive
-            ? () {
+            ? () async {
                 setState(() => isButtonActive = false);
-
+                Account account = Account.fromJson(
+                  jsonDecode(UtilsPreference.getFullAccount() ?? ""),
+                );                
+                account.dateOfBirth =
+                    DateFormat("yyyy-MM-dd").format(selectedDate);
+                await put("updateAccount", account);                
+                UtilsPreference.setAccount(account);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  buildSnackBar("Đã lưu thay đổi"),
+                );
               }
             : null,
         style: ElevatedButton.styleFrom(
@@ -69,7 +88,7 @@ class _CupertinoSheetState extends State<CupertinoSheet> {
           primary: kPrimaryColor,
         ),
         child: const Text(
-          "Save Changes",
+          "Lưu thay đổi",
           style: TextStyle(
             fontWeight: FontWeight.w300,
             fontSize: 16,
@@ -79,5 +98,17 @@ class _CupertinoSheetState extends State<CupertinoSheet> {
     );
   }
 
-  
+  Future<String> put(String uri, Account account) async {
+    var jsonData =
+        await callApiMultipart(uri, "put", bodyParams: account.toJson2());
+    return jsonData;
+  }
+
+  SnackBar buildSnackBar(String text) {
+    return SnackBar(
+      content: Text(text),
+      duration: const Duration(seconds: 4),
+      dismissDirection: DismissDirection.down,
+    );
+  }
 }

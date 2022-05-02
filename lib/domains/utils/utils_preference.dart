@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../repository/account.dart';
 import '../repository/cartproduct.dart';
-import '../repository/product.dart';
 
 class UtilsPreference {
   static late SharedPreferences _preferences;
@@ -79,11 +78,11 @@ class UtilsPreference {
 
   //Set full
   static Future setAccount(Account account) async {
-    await setAccountId(account.accountId!);
+    await setAccountId(account.accountId ?? 0);
     await setDisplayName(account.name ?? "user" + account.accountId.toString());
     await setPhone(account.phone ?? "");
     await setDOB(account.dateOfBirth ?? "");
-    await setGender(account.gender.toString());
+    await setGender(account.gender == null ? "" : account.gender.toString());
     await setEmail(account.email ?? "");
     await setFullAccount(account);
   }

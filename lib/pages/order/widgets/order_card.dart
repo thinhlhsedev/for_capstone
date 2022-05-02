@@ -82,8 +82,8 @@ class OrderCard extends StatelessWidget {
                   const Spacer(),
                   Row(
                     children: [
-                      buildPricePadding(
-                          getPrice(order.totalPrice!) + ".000 vnd"),
+                      buildPricePadding(                        
+                           getPrice(order.totalPrice!) + ".000 vnd"),                          
                       const Spacer(),
                       buildDetailPadding("Chi tiết", context),
                     ],
@@ -169,11 +169,12 @@ class OrderCard extends StatelessWidget {
   String getPrice(double price) {
     var tmp = "";
     if (price >= 1000) {
-      tmp = (price / 10000).toString();
-      if (tmp.length == 3) {
-        tmp = tmp + "000";
+      tmp = (price / 1000).toString();
+      print("tmp: " + tmp);
+      if (tmp.length == 6) {
+        tmp = tmp + "0";
       }
-      if (tmp.length == 4) {
+      if (tmp.length == 5) {
         tmp = tmp + "00";
       }
     } else {

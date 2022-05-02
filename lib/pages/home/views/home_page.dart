@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
 
   AppBar buildAppBar() {
     return AppBar(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kPrimaryColor,      
       elevation: 0,
       leading: Container(
         margin: EdgeInsets.only(left: SizeConfig.screenWidth * 0.03),

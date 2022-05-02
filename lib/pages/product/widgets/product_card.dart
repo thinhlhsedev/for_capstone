@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:for_capstone/pages/gasstove_detail/views/gasstove_detail_page.dart';
-import 'package:for_capstone/pages/product/widgets/rounded_icon_btn.dart';
 
 import '../../../constants.dart';
 import '../../../domains/api/api_method.dart';
@@ -11,6 +10,8 @@ import '../../../domains/repository/cartproduct.dart';
 import '../../../domains/repository/product.dart';
 import '../../../domains/utils/utils_preference.dart';
 import '../../../size_config.dart';
+import 'ovaled_icon_btn.dart';
+import 'rounded_icon_btn.dart';
 
 class ProductCard extends StatefulWidget {
   const ProductCard({
@@ -28,11 +29,14 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   late int number;
+  late int chosenNumber;
+  var multiNumber = [1, 10, 100, 1000];
 
   @override
   void initState() {
     super.initState();
     number = 0;
+    chosenNumber = 0;
   }
 
   @override
@@ -74,15 +78,52 @@ class _ProductCardState extends State<ProductCard> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(
-                  text: TextSpan(
-                    text: widget.product.productName,
-                    style: Theme.of(context).textTheme.button!.copyWith(
-                          color: Colors.black.withOpacity(0.8),
-                          fontSize: 16,
-                        ),
-                  ),
-                  maxLines: 1,
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 65,
+                      child: Row(
+                        //mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: RichText(
+                                text: TextSpan(
+                                  text: widget.product.productName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .button!
+                                      .copyWith(
+                                        color: Colors.black.withOpacity(0.8),
+                                        fontSize: 16,
+                                      ),
+                                ),
+                                maxLines: 1,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    OvaledIconBtn(
+                      text: "x " + multiNumber[chosenNumber].toString(),
+                      showShadow: true,
+                      press: () {
+                        setState(() {
+                          switch (chosenNumber) {
+                            case 3:
+                              chosenNumber = 0;
+                              break;
+                            default:
+                              chosenNumber++;
+                              break;
+                          }
+                        });
+                      },
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 18),
                 Row(
@@ -92,12 +133,14 @@ class _ProductCardState extends State<ProductCard> {
                       showShadow: true,
                       press: () {
                         setState(() {
-                          if (number != 0) {
-                            number--;
+                          if (number != 0 &&
+                              number >= multiNumber[chosenNumber]) {
+                            number = number - multiNumber[chosenNumber];
                           }
                         });
                       },
                     ),
+                    const SizedBox(width: 5),
                     Container(
                       height: getProportionateScreenHeight(40),
                       width: getProportionateScreenHeight(40),
@@ -108,12 +151,18 @@ class _ProductCardState extends State<ProductCard> {
                         child: Text(number.toString()),
                       ),
                     ),
+                    const SizedBox(width: 5),
                     RoundedIconBtn(
                       icon: Icons.add,
                       showShadow: true,
                       press: () {
                         setState(() {
-                          number++;
+                          if (number >= 10000) {
+                            buildSnackBar(
+                                "Không thể đặt hàng quá 10000 sản phẩm cùng loại");
+                          } else {
+                            number = number + multiNumber[chosenNumber];
+                          }
                         });
                       },
                     ),
@@ -130,10 +179,10 @@ class _ProductCardState extends State<ProductCard> {
                                   amount: number);
                               List<CartProduct> cartInfo = [];
                               var list = [];
-                              if (UtilsPreference.getCartInfo() != null)
-                              {
-                                list = jsonDecode(UtilsPreference.getCartInfo()!);
-                              }                              
+                              if (UtilsPreference.getCartInfo() != null) {
+                                list =
+                                    jsonDecode(UtilsPreference.getCartInfo()!);
+                              }
 
                               checkCart(list, cartProduct, cartInfo);
 

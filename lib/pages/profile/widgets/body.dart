@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:for_capstone/constants.dart';
 import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/pages/signin/views/sign_in_page.dart';
+import 'package:intl/intl.dart';
 
 import '../../../domains/api/api_google.dart';
 import '../../profile_modify/views/profile_modify_page.dart';
@@ -19,7 +20,6 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   late DateTime selectedDate;
-  late DateTime firstDate;
   late String tmpDate;
   bool isButtonActive = false;
 
@@ -29,12 +29,16 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    tmpDate = UtilsPreference.getDOB()!.substring(0, 10);
-    selectedDate = DateTime.parse(tmpDate);
-    firstDate = selectedDate;
+    if (UtilsPreference.getDOB()! != "") {
+      tmpDate = UtilsPreference.getDOB()!.substring(0, 10);
+      selectedDate = DateTime.parse(tmpDate);
+      dob = getDate(tmpDate);
+    } else {
+      selectedDate = DateTime.now();
+      dob = DateFormat("dd/MM/yyyy").format(selectedDate);
+    }
 
     fullName = UtilsPreference.getDisplayname()!;
-    dob = getDate(tmpDate);
     phone = UtilsPreference.getPhone()!;
     email = UtilsPreference.getEmail()!;
     gender = UtilsPreference.getGender()!;
@@ -71,16 +75,18 @@ class _BodyState extends State<Body> {
               contentText: dob,
               icon: "assets/icons/calendar.svg",
               press: () {
-                buildCupertinoActionSheet(context);
+                buildCupertinoActionSheet(
+                  context,
+                );
               },
             ),
             ProfileMenu(
               titleText: "Giới Tính",
-              contentText: gender != null
+              contentText: gender != ""
                   ? UtilsPreference.getGender() == "true"
                       ? "Nam"
                       : "Nữ"
-                  : "Empty",
+                  : "Chưa có",
               icon: "assets/icons/gender.svg",
               press: () {
                 Navigator.push(
@@ -95,7 +101,7 @@ class _BodyState extends State<Body> {
             ),
             ProfileMenu(
               titleText: "Số Điện Thoại",
-              contentText: phone,
+              contentText: phone == "" ? "Chưa có" : phone,
               icon: "assets/icons/address_book.svg",
               press: () {
                 Navigator.push(
@@ -147,16 +153,23 @@ class _BodyState extends State<Body> {
   }
 
   Future<void> refreshProfile() async {
-    await Future.delayed(const Duration(seconds: 1),);    
-      setState(() {
-        fullName = UtilsPreference.getDisplayname()!;
-        tmpDate = UtilsPreference.getDOB()!.substring(0, 10);
+    await Future.delayed(
+      const Duration(seconds: 1),
+    );
+    setState(() {
+      if (UtilsPreference.getDOB()! != "") {
+        tmpDate = UtilsPreference.getDOB()!.substring(0, 10); 
         dob = getDate(tmpDate);
-        phone = UtilsPreference.getPhone()!;
-        email = UtilsPreference.getEmail()!;
-        gender = UtilsPreference.getGender()!;
-      });
-    }
+      } else {        
+        dob = DateFormat("dd/MM/yyyy").format(selectedDate);
+      }
+
+      fullName = UtilsPreference.getDisplayname()!;
+      phone = UtilsPreference.getPhone()!;
+      email = UtilsPreference.getEmail()!;
+      gender = UtilsPreference.getGender()!;
+    });
+  }
 
   Future logOut(BuildContext context) async {
     await GoogleSignInAPI.logout();

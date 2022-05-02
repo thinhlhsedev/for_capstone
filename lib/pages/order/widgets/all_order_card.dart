@@ -91,7 +91,9 @@ class AllOrderCard extends StatelessWidget {
                   Row(
                     children: [
                       buildPricePadding(
-                          getPrice(order.totalPrice!) + ".000 vnd"),
+                          order.totalPrice! != 0 
+                          ? getPrice(order.totalPrice!) + ".000 vnd"
+                          : "..."),
                       const Spacer(),
                       buildDetailPadding("Chi tiết", context),
                     ],

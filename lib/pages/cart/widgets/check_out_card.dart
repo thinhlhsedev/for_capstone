@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:for_capstone/domains/repository/cart.dart';
+import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
 import '../../../domains/api/api_method.dart';
@@ -203,6 +204,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
               status: "Pending",
               isShorTerm: true,
               note: note,
+              expiryDate: DateFormat("dd/MM/yy").format(DateTime.now()),
             );
 
             addOrder("addOrder/2", order);
@@ -255,7 +257,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
               );
             },
             "Quay về màn hính chính",
-          )
+          ),
         ],
       ),
     );
@@ -284,7 +286,6 @@ class _CheckoutCartState extends State<CheckoutCart> {
       () {
         setState(() {
           note = textFieldController2.text;
-          //UtilsPreference.set(address);
           Navigator.of(context).pop();
         });
       },

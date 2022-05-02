@@ -4,6 +4,7 @@ import 'package:for_capstone/domains/api/api_method_mutipart.dart';
 import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/pages/signin/widgets/background.dart';
 import 'package:for_capstone/size_config.dart';
+import 'package:intl/intl.dart';
 
 import '../../../domains/api/api_google.dart';
 import '../../../domains/api/api_method.dart';
@@ -115,10 +116,16 @@ class _BodyState extends State<Body> {
             ex
                 .toString()
                 .contains("Unexpected end of input (at character 1)")) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            buildSnackBar("Tài khoản của bạn bị lỗi"),
+          Account tmpAccount = Account(
+            avatarUrl: account.photoUrl,
+            email: account.email,
+            name: account.displayName,
+            roleId: "CUS",
+            isActive: true,            
           );
-          GoogleSignInAPI.logout();
+          await addAccount("addAccount", tmpAccount);
+          var newAccount = await getAccount("getAccountByEmail/" + account.email);
+          UtilsPreference.setAccount(newAccount);
         }
       }
     } else {
@@ -141,7 +148,7 @@ class _BodyState extends State<Body> {
 
   Future<String> addAccount(String uri, Account account) async {
     var jsonData =
-        await callApiMultipart(uri, "post", bodyParams: account.toJson2());
+        await callApiMultipart(uri, "post", bodyParams: account.toJson3());
     return jsonData;
   }
 

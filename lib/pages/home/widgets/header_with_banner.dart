@@ -39,6 +39,12 @@ class _HeaderWithBannerState extends State<HeaderWithBanner> {
             ),
             height: SizeConfig.screenHeight * 0.2 - 16,
             decoration: const BoxDecoration(
+              // gradient: LinearGradient(
+              //   colors: [
+              //     Colors.red,
+              //     kPrimaryColor
+              //   ]
+              // ),
               color: kPrimaryColor,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(36),

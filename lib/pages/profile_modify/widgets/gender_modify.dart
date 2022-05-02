@@ -81,15 +81,14 @@ class _GenderModifyState extends State<GenderModify> {
                       account.gender = false;
                       break;
                   }
-                  if (put("updateAccount", account).toString() == "Ok") {
-                    UtilsPreference.setAccount(account);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ProfilePage(),
-                      ),
-                    );
-                  }
+                  await put("updateAccount", account);
+                  UtilsPreference.setAccount(account);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProfilePage(),
+                    ),
+                  );
                 })
               : null,
           style: ElevatedButton.styleFrom(

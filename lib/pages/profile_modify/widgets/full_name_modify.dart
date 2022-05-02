@@ -102,7 +102,7 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
 
                           account.name = newName;
 
-                          put("updateAccount", account);
+                          await put("updateAccount", account);
                           UtilsPreference.setAccount(account);
                           ScaffoldMessenger.of(context).showSnackBar(                            
                             buildSnackBar("Đã lưu thay đổi"),

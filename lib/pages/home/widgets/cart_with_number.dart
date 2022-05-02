@@ -65,7 +65,5 @@ class _CartWithNumberState extends State<CartWithNumber> {
   getTotalItem() {
     List list = jsonDecode(UtilsPreference.getCartInfo()!);
     return list.length;
-  }
-
-  
+  }  
 }

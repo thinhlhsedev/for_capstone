@@ -232,7 +232,7 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
 
                   account.phone = "0" + newPhone.substring(3);
 
-                  put("updateAccount", account);
+                  await put("updateAccount", account);
                   UtilsPreference.setAccount(account);
                   Navigator.push(
                     context,
