@@ -17,7 +17,6 @@ class OrderDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(),
       body: Body(orderId: orderId,),
-      bottomNavigationBar: const BottomNavBar(),
     );
   }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:for_capstone/constants.dart';
-import 'package:for_capstone/pages/gasstove_detail/widgets/price.dart';
 import 'package:for_capstone/size_config.dart';
 
 import '../../../domains/repository/product.dart';

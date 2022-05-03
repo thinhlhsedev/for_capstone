@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:for_capstone/constants.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../domains/api/api_method.dart';
@@ -20,7 +19,6 @@ class CardLoadProduct extends StatefulWidget {
 }
 
 class _CardLoadProductState extends State<CardLoadProduct> {
-  List<Product> list = [];
 
   @override
   Widget build(BuildContext context) {

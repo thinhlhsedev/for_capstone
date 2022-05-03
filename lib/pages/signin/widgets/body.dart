@@ -40,8 +40,9 @@ class _BodyState extends State<Body> {
             padding: const EdgeInsets.only(right: 20, left: 20, top: 50),
             child: Column(
               children: [
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
-                Image.asset("assets/images/logo.png"),
+                SizedBox(height: SizeConfig.screenHeight * 0.25),
+                Image.asset("assets/images/logo.png"
+                ,height: 125,),
               ],
             ),
           ),
@@ -56,7 +57,7 @@ class _BodyState extends State<Body> {
                     await signIn(context);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                          builder: (context) => const GeneralPage()),
+                          builder: (context) => const GeneralPage(chosenIndex: 0,)),
                     );
                     setState(() {
                       isLoading = false;
@@ -85,7 +86,6 @@ class _BodyState extends State<Body> {
 
           var cartFetch = await getCart(
               "getCartByAccountId/" + accountFetch.accountId.toString());
-
           
             if (cartFetch.cartInfo == null) {
               var newCart = Cart(
@@ -171,7 +171,7 @@ class _BodyState extends State<Body> {
   SnackBar buildSnackBar(String text) {
     return SnackBar(
       content: Text(text),
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 3),
       dismissDirection: DismissDirection.down,
     );
   }

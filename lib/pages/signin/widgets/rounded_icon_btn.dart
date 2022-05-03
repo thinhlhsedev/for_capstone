@@ -17,14 +17,11 @@ class RoundedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.only(right: 10, left: 10),
       width: SizeConfig.screenWidth * 0.8,
       child: newElevatedButton(),
     );
   }
-
-  //Used:ElevatedButton as FlatButton is deprecated.
-  //Here we have to apply customizations to Button by inheriting the styleFrom
 
   Widget newElevatedButton() {
     return ElevatedButton(
@@ -33,12 +30,12 @@ class RoundedButton extends StatelessWidget {
           text,
           style: const TextStyle(
             color: kPrimaryColor,
-            fontSize: 17,
+            fontSize: 22,
             fontWeight: FontWeight.w500,
           ),
           textAlign: TextAlign.center,
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
         leading: SvgPicture.asset(
           "assets/icons/google.svg",
           height: 30,

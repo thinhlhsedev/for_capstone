@@ -222,8 +222,8 @@ class _CartCardState extends State<CartCard> {
                       height: 22,
                       color: kPrimaryColor,
                     )
-                  : SvgPicture.asset(
-                      "assets/icons/information.svg",
+                  : Image.asset(
+                      "assets/images/information.png",
                       height: 22,
                       color: kPrimaryColor,
                     ),
@@ -272,7 +272,7 @@ class _CartCardState extends State<CartCard> {
   SnackBar buildSnackBar(String text) {
     return SnackBar(
       content: Text(text),
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 3),
       dismissDirection: DismissDirection.down,
     );
   }

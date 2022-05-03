@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:for_capstone/domains/api/ngrok_input.dart';
 import 'package:for_capstone/domains/utils/utils_preference.dart';
-import 'package:for_capstone/pages/signin/views/sign_in_page.dart';
 
 import 'constants.dart';
 

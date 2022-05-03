@@ -14,15 +14,13 @@ class ProfilePic extends StatelessWidget {
       height: 220,
       width: 220,
       child: Stack(
-        fit: StackFit.expand,
-        clipBehavior: Clip.none,
+        fit: StackFit.expand,        
         children: [
           CircleAvatar(
             child: CircleAvatar(
               backgroundImage: NetworkImage(UtilsPreference.getPhoto() ?? ""),
-              maxRadius: 107,
-            ),
-            backgroundColor: kPrimaryColor,
+              maxRadius: 110,
+            ),           
           ),
         ],
       ),

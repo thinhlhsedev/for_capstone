@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:for_capstone/pages/cart/widgets/check_out_card.dart';
+import 'package:for_capstone/pages/general/views/general_page.dart';
 
 import '../../../constants.dart';
 import '../../../domains/utils/utils_preference.dart';
@@ -37,6 +38,14 @@ class CartPage extends StatelessWidget {
         ],
       ),
       centerTitle: true,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_outlined),
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const GeneralPage(chosenIndex: 0,)),
+          );
+        },
+      ),
     );
   }
 

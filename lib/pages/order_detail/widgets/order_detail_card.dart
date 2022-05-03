@@ -135,22 +135,25 @@ class OrderDetailCard extends StatelessWidget {
     return Product.fromJson(jsonData);
   }
 
-  String getPrice(double price){   
-    var tmp = ""; 
-    if (price >= 1000)
-    {
-      tmp = (price/1000).toString();
-      if (tmp.length == 3)
-      {
-        tmp = tmp + "00";
-      }
-      if (tmp.length == 4)
-      {
-        tmp = tmp + "0";
-      }
-    } else {
-      tmp = price.floor().toString();
+  String getPrice(double price) {
+    var tmp = price.toString().split(".")[0];
+    var tmp2 = "";
+    var count = 0;
+    var tmp3 = ""; 
+  
+    for (int i = tmp.length - 1; i >= 0; i--) {
+      tmp2 = tmp2 + tmp[i];
+      if (count == 2 && i!= 0) {
+        
+        tmp2 = tmp2 + ".";
+        count = 0;
+      } else {
+        count++;
+      }      
     }
-    return tmp;
+    for (int i = tmp2.length - 1; i >= 0; i--) {
+      tmp3 = tmp3 + tmp2[i];
+    }
+    return tmp3;
   }
 }

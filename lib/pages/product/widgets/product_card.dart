@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:for_capstone/pages/gasstove_detail/views/gasstove_detail_page.dart';
+import 'package:for_capstone/pages/product/views/product_page.dart';
 
 import '../../../constants.dart';
 import '../../../domains/api/api_method.dart';
@@ -170,43 +171,45 @@ class _ProductCardState extends State<ProductCard> {
                     RoundedIconBtn(
                       icon: Icons.add_shopping_cart_outlined,
                       showShadow: true,
-                      press: () {
-                        setState(() {
-                          if (number != 0) {
-                            try {
-                              CartProduct cartProduct = CartProduct(
-                                  productId: widget.product.productId,
-                                  amount: number);
-                              List<CartProduct> cartInfo = [];
-                              var list = [];
-                              if (UtilsPreference.getCartInfo() != null) {
-                                list =
-                                    jsonDecode(UtilsPreference.getCartInfo()!);
-                              }
-
-                              checkCart(list, cartProduct, cartInfo);
-
-                              Cart cart = setCart(cartInfo);
-
-                              updateCart("updateCart", cart);
-
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                buildSnackBar("Đã thêm vào giỏ hàng"),
-                              );
-
-                              setState(() {
-                                number = 0;
-                              });
-                            } on Exception {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                buildSnackBar("Có lỗi với giỏ hàng"),
-                              );
+                      press: () async {
+                        if (number != 0) {
+                          try {
+                            CartProduct cartProduct = CartProduct(
+                                productId: widget.product.productId,
+                                amount: number);
+                            List<CartProduct> cartInfo = [];
+                            var list = [];
+                            if (UtilsPreference.getCartInfo() != null) {
+                              list = jsonDecode(UtilsPreference.getCartInfo()!);
                             }
-                          } else {
+
+                            checkCart(list, cartProduct, cartInfo);
+
+                            Cart cart = setCart(cartInfo);
+
+                            await updateCart("updateCart", cart);
+
                             ScaffoldMessenger.of(context).showSnackBar(
-                                buildSnackBar("Vui lòng tăng số lượng"));
+                              buildSnackBar("Đã thêm vào giỏ hàng"),
+                            );
+
+                            setState(() {
+                              number = 0;
+                            });
+
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => const ProductPage()),
+                            );
+                          } on Exception {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              buildSnackBar("Có lỗi với giỏ hàng"),
+                            );
                           }
-                        });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              buildSnackBar("Vui lòng tăng số lượng"));
+                        }
                       },
                     ),
                   ],
@@ -223,8 +226,8 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                 );
               },
-              child: SvgPicture.asset(
-                "assets/icons/information.svg",
+              child: Image.asset(
+                "assets/images/information.png",
                 height: 22,
                 color: kPrimaryColor,
               ),
@@ -279,7 +282,7 @@ class _ProductCardState extends State<ProductCard> {
   SnackBar buildSnackBar(String text) {
     return SnackBar(
       content: Text(text),
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 3),
       dismissDirection: DismissDirection.down,
     );
   }

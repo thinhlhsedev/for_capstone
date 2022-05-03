@@ -107,7 +107,7 @@ class _CupertinoSheetState extends State<CupertinoSheet> {
   SnackBar buildSnackBar(String text) {
     return SnackBar(
       content: Text(text),
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 3),
       dismissDirection: DismissDirection.down,
     );
   }

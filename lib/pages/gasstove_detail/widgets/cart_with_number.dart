@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../domains/utils/utils_preference.dart';
 import '../../cart/views/cart_page.dart';

@@ -72,9 +72,7 @@ class _BodyState extends State<Body> {
             ),
             ProfileMenu(
               titleText: "Ngày Sinh",
-              contentText: UtilsPreference.getDOB()! == ""
-              ? "Chưa có"
-              : dob,
+              contentText: UtilsPreference.getDOB()! == "" ? "Chưa có" : dob,
               icon: "assets/icons/calendar.svg",
               press: () {
                 buildCupertinoActionSheet(
@@ -137,6 +135,9 @@ class _BodyState extends State<Body> {
               icon: "assets/icons/log_out.svg",
               press: () {
                 logOut(context);
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const SigninPage()),
+                );
               },
             ),
           ],
@@ -160,9 +161,9 @@ class _BodyState extends State<Body> {
     );
     setState(() {
       if (UtilsPreference.getDOB()! != "") {
-        tmpDate = UtilsPreference.getDOB()!.substring(0, 10); 
+        tmpDate = UtilsPreference.getDOB()!.substring(0, 10);
         dob = getDate(tmpDate);
-      } else {        
+      } else {
         dob = DateFormat("dd/MM/yyyy").format(selectedDate);
       }
 
@@ -170,7 +171,6 @@ class _BodyState extends State<Body> {
       phone = UtilsPreference.getPhone()!;
       email = UtilsPreference.getEmail()!;
       gender = UtilsPreference.getGender()!;
-      
     });
   }
 

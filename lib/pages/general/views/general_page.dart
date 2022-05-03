@@ -6,7 +6,12 @@ import '../../order/views/order_page.dart';
 import '../../profile/views/profile_page.dart';
 
 class GeneralPage extends StatefulWidget {
-  const GeneralPage({Key? key}) : super(key: key);
+  const GeneralPage({
+    Key? key,
+    required this.chosenIndex,
+  }) : super(key: key);
+
+  final int chosenIndex;
 
   @override
   State<GeneralPage> createState() => _GeneralPageState();
@@ -34,7 +39,7 @@ class _GeneralPageState extends State<GeneralPage> {
           height: 70,
           onDestinationSelected: (newIndex) {
             setState(() {
-              currentIndex = newIndex;              
+              currentIndex = newIndex;
               // Navigator.of(context).pushReplacement(
               //   MaterialPageRoute(builder: (context) => screen[currentIndex]),
               // );

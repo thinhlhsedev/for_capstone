@@ -253,7 +253,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
             context,
             () {
               Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const GeneralPage()),
+                MaterialPageRoute(builder: (context) => const GeneralPage(chosenIndex: 0,)),
               );
             },
             "Quay về màn hính chính",

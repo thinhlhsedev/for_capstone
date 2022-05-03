@@ -122,7 +122,7 @@ class _GenderModifyState extends State<GenderModify> {
   SnackBar buildSnackBar(String text) {
     return SnackBar(
       content: Text(text),
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 3),
       dismissDirection: DismissDirection.down,
     );
   }

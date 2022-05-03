@@ -51,11 +51,11 @@ class _CartPanelState extends State<CartPanel> {
                     if (widget.list.isEmpty) {
                       UtilsPreference.setCartInfo(<CartProduct>[]);
                       Cart cart = setCart(<CartProduct>[]);
-                      updateCart("updateCart", cart);
+                      await updateCart("updateCart", cart);
                     } else {
                       UtilsPreference.setCartInfo(widget.list);
                       Cart cart = setCart(widget.list);
-                      updateCart("updateCart", cart);
+                      await updateCart("updateCart", cart);
                     }
                   },
                   background: Container(
@@ -99,32 +99,6 @@ class _CartPanelState extends State<CartPanel> {
               ),
             ),
     );
-  }
-
-  FutureBuilder<dynamic> loadProductData(String uri, int number) {
-    return FutureBuilder<dynamic>(
-      future: getProduct(uri),
-      builder: (context, snapshot) {
-        final product = snapshot.data;
-        return CartCard(
-          product: product,
-          amount: number,
-          press: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => GasStoveDetailPage(product: product),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Future<Product> getProduct(String uri) async {
-    var jsonData = await callApi(uri, "get");
-    return Product.fromJson(jsonData);
   }
 
   Future<dynamic> updateCart(String uri, Cart cart) async {

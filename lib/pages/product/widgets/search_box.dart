@@ -16,9 +16,7 @@ class SearchBox extends StatefulWidget {
 }
 
 class _SearchBoxState extends State<SearchBox> {
-
-  TextEditingController textFieldController =
-      TextEditingController(); 
+  TextEditingController textFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +31,9 @@ class _SearchBoxState extends State<SearchBox> {
         horizontal: kDefaultPadding,
       ),
       decoration: BoxDecoration(
-        color: kPrimaryColor.withOpacity(0.4),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: kPrimaryColor),
       ),
       child: TextField(
         controller: textFieldController,
@@ -45,7 +44,6 @@ class _SearchBoxState extends State<SearchBox> {
           focusedBorder: InputBorder.none,
           icon: SvgPicture.asset("assets/icons/search.svg"),
           hintText: 'Tìm kiếm',
-          hintStyle: const TextStyle(color: kPrimaryColor),
         ),
       ),
     );

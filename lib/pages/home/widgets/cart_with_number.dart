@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../../../domains/utils/utils_preference.dart';
@@ -17,7 +18,7 @@ class _CartWithNumberState extends State<CartWithNumber> {
   @override
   void initState() {
     super.initState();
-    //number = getTotalItem();
+    number = getTotalItem();
   }
 
   @override
@@ -39,31 +40,31 @@ class _CartWithNumberState extends State<CartWithNumber> {
             );
           },
         ),
-        // Positioned(
-        //   right: 2,
-        //   top: 5,
-        //   child: SizedBox(
-        //     height: 18,
-        //     width: 18,
-        //     child: Container(
-        //       decoration: BoxDecoration(
-        //           borderRadius: BorderRadius.circular(16), color: Colors.white),
-        //       child: Center(
-        //         child: Text(
-        //           number.toString(),
-        //           style: const TextStyle(
-        //               color: Colors.black, fontWeight: FontWeight.w500),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
+        Positioned(
+          right: 2,
+          top: 5,
+          child: SizedBox(
+            height: 18,
+            width: 18,
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16), color: Colors.white),
+              child: Center(
+                child: Text(
+                  number.toString(),
+                  style: const TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w500),
+                ),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  // getTotalItem() {
-  //   List list = jsonDecode(UtilsPreference.getCartInfo()!);
-  //   return list.length;
-  // }  
+  getTotalItem() {
+    List list = jsonDecode(UtilsPreference.getCartInfo()!);
+    return list.length;
+  }  
 }
