@@ -208,7 +208,7 @@ class _CartCardState extends State<CartCard> {
                       });
                     }
                   : () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) =>

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '../../../domains/repository/cartproduct.dart';
 import '../../../domains/utils/utils_preference.dart';
 import '../../cart/views/cart_page.dart';
 
@@ -64,7 +65,11 @@ class _CartWithNumberState extends State<CartWithNumber> {
   }
 
   getTotalItem() {
-    List list = jsonDecode(UtilsPreference.getCartInfo()!);
+    List list;
+    UtilsPreference.getCartInfo() != ""
+    ? list = jsonDecode(UtilsPreference.getCartInfo()!)
+    : list = <CartProduct>[];
     return list.length;
   }  
 }
+ 

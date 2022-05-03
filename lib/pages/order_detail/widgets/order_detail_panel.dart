@@ -28,14 +28,9 @@ class OrderDetailPanel extends StatelessWidget {
         final orderDetails = snapshot.data;
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return Padding(
-              padding:
-                  EdgeInsets.only(top: 220, left: SizeConfig.screenWidth / 2),
-              child: const CircularProgressIndicator(
-                backgroundColor: Colors.white,
-                color: kPrimaryColor,
-                strokeWidth: 6,
-              ),
+            return const Center(
+              heightFactor: 6,
+              child: kSpinkit,
             );
           default:
             if (snapshot.hasError) {
@@ -73,10 +68,11 @@ class OrderDetailPanel extends StatelessWidget {
             child: OrderDetailCard(
               orderDetail: orderDetail,
               press: () {
-                      Navigator.push(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GasStoveDetailPage(product: orderDetail.product!),
+                    builder: (context) =>
+                        GasStoveDetailPage(product: orderDetail.product!),
                   ),
                 );
               },

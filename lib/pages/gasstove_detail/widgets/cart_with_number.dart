@@ -19,12 +19,6 @@ class _CartWithNumberState extends State<CartWithNumber> {
     super.initState();
     number = getTotalItem();
   }
-  
-  @override
-  void didUpdateWidget(covariant CartWithNumber oldWidget) {    
-    super.didUpdateWidget(oldWidget);
-    number = getTotalItem();
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -2,15 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:for_capstone/constants.dart';
+import 'package:for_capstone/pages/cart/views/cart_page.dart';
 import 'package:for_capstone/pages/cart/widgets/card_load_product.dart';
 
 import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/cart.dart';
 import '../../../domains/repository/cartproduct.dart';
-import '../../../domains/repository/product.dart';
 import '../../../domains/utils/utils_preference.dart';
-import '../../gasstove_detail/views/gasstove_detail_page.dart';
-import 'cart_card.dart';
 
 class CartPanel extends StatefulWidget {
   const CartPanel({
@@ -57,6 +55,9 @@ class _CartPanelState extends State<CartPanel> {
                       Cart cart = setCart(widget.list);
                       await updateCart("updateCart", cart);
                     }
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => const CartPage()),
+                    );
                   },
                   background: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20),

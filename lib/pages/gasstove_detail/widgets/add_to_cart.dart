@@ -9,6 +9,7 @@ import '../../../constants.dart';
 import '../../../domains/api/api_method.dart';
 import '../../../domains/repository/cart.dart';
 import '../../../domains/repository/product.dart';
+import '../views/gasstove_detail_page.dart';
 
 class AddToCart extends StatelessWidget {
   const AddToCart({
@@ -21,8 +22,7 @@ class AddToCart extends StatelessWidget {
   final int number;
 
   @override
-  Widget build(BuildContext context) {    
-
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       height: SizeConfig.screenHeight * 0.07,
@@ -51,6 +51,12 @@ class AddToCart extends StatelessWidget {
                       Cart cart = setCart(cartInfo);
 
                       updateCart("updateCart", cart);
+
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  GasStoveDetailPage(product: product)));
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         buildSnackBar("Đã thêm vào giỏ hàng"),
@@ -88,7 +94,11 @@ class AddToCart extends StatelessWidget {
     return cart;
   }
 
-  void checkCart(list, CartProduct cartProduct, List<CartProduct> cartInfo,) async {
+  void checkCart(
+    list,
+    CartProduct cartProduct,
+    List<CartProduct> cartInfo,
+  ) async {
     list.forEach((v) async {
       var productTmp = CartProduct.fromJson(v);
       cartInfo.add(productTmp);
@@ -99,13 +109,13 @@ class AddToCart extends StatelessWidget {
 
     for (int i = 0; i < len; i++) {
       if (cartInfo[i].productId == cartProduct.productId) {
-        cartInfo[i].amount = cartInfo[i].amount! + cartProduct.amount!;        
+        cartInfo[i].amount = cartInfo[i].amount! + cartProduct.amount!;
         checkExist = true;
         break;
       }
     }
     if (!checkExist) {
-      cartInfo.add(cartProduct);      
+      cartInfo.add(cartProduct);
     }
 
     UtilsPreference.setCartInfo(cartInfo);
