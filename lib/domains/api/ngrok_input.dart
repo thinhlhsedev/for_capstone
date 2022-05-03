@@ -19,7 +19,7 @@ class Ngrok extends StatelessWidget {
           const SizedBox(height: 20),
           TextButton(
             onPressed: () {
-              ApiUrl.host = textFieldController.text.substring(8);
+              //ApiUrl.host = textFieldController.text.substring(8);
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => const SigninPage()),
               );

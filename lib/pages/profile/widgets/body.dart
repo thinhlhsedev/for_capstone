@@ -72,7 +72,9 @@ class _BodyState extends State<Body> {
             ),
             ProfileMenu(
               titleText: "Ngày Sinh",
-              contentText: dob,
+              contentText: UtilsPreference.getDOB()! == ""
+              ? "Chưa có"
+              : dob,
               icon: "assets/icons/calendar.svg",
               press: () {
                 buildCupertinoActionSheet(

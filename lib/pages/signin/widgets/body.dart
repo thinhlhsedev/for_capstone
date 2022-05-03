@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:for_capstone/constants.dart';
 import 'package:for_capstone/domains/api/api_method_mutipart.dart';
 import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/pages/signin/widgets/background.dart';
 import 'package:for_capstone/size_config.dart';
-import 'package:intl/intl.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../domains/api/api_google.dart';
 import '../../../domains/api/api_method.dart';
@@ -84,22 +86,16 @@ class _BodyState extends State<Body> {
           var cartFetch = await getCart(
               "getCartByAccountId/" + accountFetch.accountId.toString());
 
-          if (cartFetch.accountId != null) {
-            if (cartFetch.cartInfo == null) {
-              UtilsPreference.setCart(Cart(
-                  accountId: accountFetch.accountId,
-                  cartInfo: null,
-                  totalPrice: 0));
-            } else {
-              UtilsPreference.setCart(cartFetch);
-            }
-          } else {
-            var cartFetch = Cart(
+          if (cartFetch.cartInfo == null) {
+            var newCart = Cart(
                 accountId: accountFetch.accountId,
                 cartInfo: null,
                 totalPrice: 0);
+            await addCart("addCart", newCart);
+            UtilsPreference.setCart(newCart);
+          } else {
+            await addCart("addCart", cartFetch);
             UtilsPreference.setCart(cartFetch);
-            addCart("addCart", cartFetch);
           }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -121,11 +117,9 @@ class _BodyState extends State<Body> {
             email: account.email,
             name: account.displayName,
             roleId: "CUS",
-            isActive: true,            
+            isActive: true,
           );
-          await addAccount("addAccount", tmpAccount);
-          var newAccount = await getAccount("getAccountByEmail/" + account.email);
-          UtilsPreference.setAccount(newAccount);
+          await buildNewAccountAndCart(tmpAccount, account);
         }
       }
     } else {
@@ -134,6 +128,19 @@ class _BodyState extends State<Body> {
         buildSnackBar("Vui lòng đăng nhập bằng tài khoản khác"),
       );
     }
+  }
+
+  Future<void> buildNewAccountAndCart(
+      Account tmpAccount, GoogleSignInAccount account) async {
+    await addAccount("addAccount", tmpAccount);
+    var newAccount = await getAccount("getAccountByEmail/" + account.email);
+    UtilsPreference.setAccount(newAccount);
+    UtilsPreference.setPhoto(account.photoUrl!);
+
+    var newCart =
+        Cart(accountId: newAccount.accountId, cartInfo: null, totalPrice: 0);
+    await addCart("addCart", newCart);
+    UtilsPreference.setCart(newCart);
   }
 
   Future<Account> getAccount(String uri) async {
@@ -152,8 +159,10 @@ class _BodyState extends State<Body> {
     return jsonData;
   }
 
-  Future<String> addCart(String uri, Cart cart) async {
-    var jsonData = await callApi(uri, "post", bodyParams: cart.toJson3());
+  Future<dynamic> addCart(String uri, Cart cart) async {
+    var jsonData = await callApi(uri, "post",
+        bodyParams: jsonEncode(cart.toJson3()),
+        header: {'Content-Type': 'application/json; charset=UTF-8'});
     return jsonData;
   }
 

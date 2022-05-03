@@ -30,7 +30,9 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   TextEditingController phoneController = TextEditingController(
-      text: "+84" + UtilsPreference.getPhone()!.substring(1));
+      text: UtilsPreference.getPhone() != ""
+          ? "+84" + UtilsPreference.getPhone()!.substring(1)
+          : null);
   TextEditingController otpController = TextEditingController();
   var currentState = MobileVerificationState.showMobileFormState;
   bool isButtonActive = true, showLoading = false;
@@ -41,7 +43,9 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
     super.initState();
     phoneController.addListener(() {
       var isButtonActive = phoneController.text.isNotEmpty;
-      tmpPhone = "+84" + UtilsPreference.getPhone()!.substring(1);
+      UtilsPreference.getPhone() != ""
+      ? tmpPhone = "+84" + UtilsPreference.getPhone()!.substring(1)
+      : tmpPhone = "";
       setState(() {
         if (phoneController.text == tmpPhone) {
           isButtonActive = false;
@@ -83,7 +87,7 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
                 autofocus: true,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
-                  hintText: "Điền số điện thoại của bạn",
+                  hintText: "Nhập số điện thoại của bạn",
                   contentPadding:
                       const EdgeInsets.only(top: 10, bottom: 10, left: 15),
                   border: const OutlineInputBorder(),
@@ -104,7 +108,7 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
                 ),
                 validator: PatternValidator(
                     r'((\+84)+(9|3|7|8|5)+([0-9]{8})\b)',
-                    errorText: "Điền số điện thoại phù hợp"),
+                    errorText: "Điền số điện thoại phù hợp (+84)"),
                 onSaved: (value) => setState(() {
                   newPhone = value!;
                 }),

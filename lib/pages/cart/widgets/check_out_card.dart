@@ -268,6 +268,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
       "Địa chỉ của bạn",
       textFieldController,
       "Nhập địa chỉ",
+      Icons.location_on_outlined,
       () {
         setState(() {
           address = textFieldController.text;
@@ -283,6 +284,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
       "Ghi chú",
       textFieldController2,
       "Nhập ghi chú",
+      Icons.notes_outlined,
       () {
         setState(() {
           note = textFieldController2.text;
@@ -293,7 +295,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
   }
 
   Future<dynamic> buildDialog(String title, TextEditingController controller,
-      String hintext, VoidCallback press) {
+      String hintext, IconData icon, VoidCallback press) {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -310,8 +312,8 @@ class _CheckoutCartState extends State<CheckoutCart> {
           decoration: InputDecoration(
             focusedBorder: const OutlineInputBorder(),
             border: const OutlineInputBorder(),
-            prefixIcon: const Icon(
-              Icons.location_on_outlined,
+            prefixIcon: Icon(
+              icon,
               color: Colors.black,
             ),
             hintText: hintext,

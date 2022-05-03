@@ -17,7 +17,7 @@ class _CartWithNumberState extends State<CartWithNumber> {
   @override
   void initState() {
     super.initState();
-    number = getTotalItem();
+    //number = getTotalItem();
   }
 
   @override
@@ -62,8 +62,8 @@ class _CartWithNumberState extends State<CartWithNumber> {
     );
   }
 
-  getTotalItem() {
-    List list = jsonDecode(UtilsPreference.getCartInfo()!);
-    return list.length;
-  }  
+  // getTotalItem() {
+  //   List list = jsonDecode(UtilsPreference.getCartInfo()!);
+  //   return list.length;
+  // }  
 }

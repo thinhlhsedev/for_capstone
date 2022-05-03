@@ -65,28 +65,17 @@ class Cart {
       data['cartInfo'] = cartInfo!.map((v) => v.toJson()).toList();
     }
     return data;
-  }
-
-  Map<String, String> toJson2() {
-    final Map<String, String> data = <String, String>{};
-    data['CartId'] = cartId.toString();
-    data['AccountId'] = accountId.toString();
-    data['TotalPrice'] = totalPrice.toString();
-    if (cartInfo != null) {
-      data['CartInfo'] = cartInfo!.map((v) => v.toJson()).toList().toString();
-    }
-    return data;
-  }
+  }  
 
   Map<String, dynamic> toJson3() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    var data = <String, dynamic>{};
     data['CartId'] = cartId;
     data['AccountId'] = accountId;
     data['TotalPrice'] = totalPrice;
     if (cartInfo != null) {
       var str = cartInfo!.map((v) => v.toJson()).toList();
       data['CartInfo'] = jsonEncode(str);
-    }
+    } 
     return data;
   }
 }
