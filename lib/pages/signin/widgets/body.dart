@@ -86,17 +86,19 @@ class _BodyState extends State<Body> {
           var cartFetch = await getCart(
               "getCartByAccountId/" + accountFetch.accountId.toString());
 
-          if (cartFetch.cartInfo == null) {
-            var newCart = Cart(
-                accountId: accountFetch.accountId,
-                cartInfo: null,
-                totalPrice: 0);
-            await addCart("addCart", newCart);
-            UtilsPreference.setCart(newCart);
-          } else {
-            await addCart("addCart", cartFetch);
-            UtilsPreference.setCart(cartFetch);
-          }
+          
+            if (cartFetch.cartInfo == null) {
+              var newCart = Cart(
+                  accountId: accountFetch.accountId,
+                  cartInfo: null,
+                  totalPrice: 0);
+              await addCart("addCart", newCart);
+              UtilsPreference.setCart(newCart);
+            } else {
+              await addCart("addCart", cartFetch);
+              UtilsPreference.setCart(cartFetch);
+            }
+          
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             buildSnackBar("Tài khoản của bạn bị khóa"),

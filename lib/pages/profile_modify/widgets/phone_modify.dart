@@ -44,14 +44,18 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
     phoneController.addListener(() {
       var isButtonActive = phoneController.text.isNotEmpty;
       UtilsPreference.getPhone() != ""
-      ? tmpPhone = "+84" + UtilsPreference.getPhone()!.substring(1)
-      : tmpPhone = "";
+          ? tmpPhone = "+84" + UtilsPreference.getPhone()!.substring(1)
+          : tmpPhone = "";
       setState(() {
         if (phoneController.text == tmpPhone) {
           isButtonActive = false;
         }
         this.isButtonActive = isButtonActive;
       });
+    });
+    otpController.addListener(() {
+      var isButtonActive = otpController.text.isNotEmpty;
+      this.isButtonActive = isButtonActive;
     });
   }
 
@@ -67,7 +71,7 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
     return Container(
       child: showLoading
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: kSpinkit,
             )
           : currentState == MobileVerificationState.showMobileFormState
               ? getPhoneWidget()
@@ -223,6 +227,7 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
+                  setState(() => isButtonActive = false);
                   PhoneAuthCredential phoneAuthCredential =
                       PhoneAuthProvider.credential(
                           verificationId: verificationId,
@@ -238,11 +243,10 @@ class _PhoneModiFyState extends State<PhoneModiFy> {
 
                   await put("updateAccount", account);
                   UtilsPreference.setAccount(account);
-                  Navigator.push(
-                    context,
+                  buildSnackBar("Đã lưu thay đổi");
+                  Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => const ProfilePage(),
-                    ),
+                        builder: (context) => const ProfilePage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(

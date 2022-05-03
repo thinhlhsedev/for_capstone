@@ -68,7 +68,7 @@ class _GenderModifyState extends State<GenderModify> {
         ElevatedButton(
           onPressed: check != selectedValue
               ? (() async {
-                  setState(() => isButtonActive = true);
+                  setState(() => isButtonActive = false);
                   Account account = Account.fromJson(
                     jsonDecode(UtilsPreference.getFullAccount() ?? ""),
                   );
@@ -83,11 +83,12 @@ class _GenderModifyState extends State<GenderModify> {
                   }
                   await put("updateAccount", account);
                   UtilsPreference.setAccount(account);
-                  Navigator.push(
-                    context,
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    buildSnackBar("Đã lưu thay đổi"),
+                  );
+                  Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => const ProfilePage(),
-                    ),
+                        builder: (context) => const ProfilePage()),
                   );
                 })
               : null,
@@ -116,5 +117,13 @@ class _GenderModifyState extends State<GenderModify> {
     var jsonData =
         await callApiMultipart(uri, "put", bodyParams: account.toJson2());
     return jsonData;
+  }
+
+  SnackBar buildSnackBar(String text) {
+    return SnackBar(
+      content: Text(text),
+      duration: const Duration(seconds: 4),
+      dismissDirection: DismissDirection.down,
+    );
   }
 }

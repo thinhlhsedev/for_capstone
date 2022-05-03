@@ -6,6 +6,7 @@ import 'package:for_capstone/domains/utils/utils_preference.dart';
 import 'package:for_capstone/size_config.dart';
 
 import '../../../domains/repository/account.dart';
+import '../../profile/views/profile_page.dart';
 
 class FullNameModiFy extends StatefulWidget {
   const FullNameModiFy({
@@ -91,7 +92,7 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
               ElevatedButton(
                 onPressed: isButtonActive
                     ? () async {
-                        setState(() => isButtonActive = true);
+                        setState(() => isButtonActive = false);
                         final isValid = formKey.currentState!.validate();
                         if (isValid) {
                           formKey.currentState!.save();
@@ -104,8 +105,12 @@ class _FullNameModiFyState extends State<FullNameModiFy> {
 
                           await put("updateAccount", account);
                           UtilsPreference.setAccount(account);
-                          ScaffoldMessenger.of(context).showSnackBar(                            
+                          ScaffoldMessenger.of(context).showSnackBar(
                             buildSnackBar("Đã lưu thay đổi"),
+                          );
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => const ProfilePage()),
                           );
                         }
                       }

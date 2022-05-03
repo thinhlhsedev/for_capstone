@@ -170,6 +170,7 @@ class _BodyState extends State<Body> {
       phone = UtilsPreference.getPhone()!;
       email = UtilsPreference.getEmail()!;
       gender = UtilsPreference.getGender()!;
+      
     });
   }
 
